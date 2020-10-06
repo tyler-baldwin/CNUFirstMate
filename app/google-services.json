@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "403935632592",
+    "firebase_url": "https://cnu-first-mate.firebaseio.com",
+    "project_id": "cnu-first-mate",
+    "storage_bucket": "cnu-first-mate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403935632592:android:5355b6fd751adb8e8f92d5",
+        "android_client_info": {
+          "package_name": "com.example.cnufirstmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403935632592-alf9omp6tacg415if00k532aosheqioe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp0-u1_zZmc_qPtyjPoEe9HfAZCFnDc5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403935632592-alf9omp6tacg415if00k532aosheqioe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
