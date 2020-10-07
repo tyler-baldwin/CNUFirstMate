@@ -7,6 +7,8 @@ import android.view.Menu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference msgRef = database.getReference("message");
+//        msgRef.setValue("Hello, World!");
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
