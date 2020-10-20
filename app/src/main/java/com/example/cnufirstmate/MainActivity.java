@@ -2,9 +2,13 @@ package com.example.cnufirstmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -18,13 +22,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     SignInButton signInButton;
     private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
-    FirebaseDatabase db;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,31 +103,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void submitOrder(){
         Map<String, Object> orderMap = new HashMap<>();
-        orderMap.put("first", "Tyler");
-        orderMap.put("last", "Baldwin");
-        orderMap.put("building", "Rappahannock");
-        orderMap.put("room", "1001");
-        orderMap.put("issue", "Washing Machine Broken");
+        TextInputLayout building = findViewById(R.id.building);
+        String buildingText = building.getEditText().getText().toString();
+        TextInputLayout room = findViewById(R.id.room);
+        String roomText = room.getEditText().getText().toString();
+        TextInputLayout issue = findViewById(R.id.issue);
+        String issueText = issue.getEditText().getText().toString();
+        orderMap.put("first","TODO");
+        orderMap.put("last", "TODO");
+        orderMap.put("building", buildingText);
+        orderMap.put("room", roomText);
+        orderMap.put("issue", issueText);
         // Add a new document with a generated ID
         db.collection("orders")
-                .add(orderMap);
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
+                .add(orderMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
 //                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 //                        Log.w(TAG, "Error adding document", e);
-//                    }
-//                });
+                    }
+                });
     }
 
     private void initFirestore() {
-        db = FirebaseDatabase.getInstance();
-        db.setPersistenceEnabled(true);
+        db = FirebaseFirestore.getInstance();
+//        db.setPersistenceEnabled(true);
     }
 
     @Override
