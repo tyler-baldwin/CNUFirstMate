@@ -7,9 +7,27 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_work_order">Work Orders</string>
+    <string name="menu_res_life">Residence Life Messaging</string>
+    <string name="menu_cnu_pages">CNU Resources</string>
+
+    <string name="title">CNU First Mate</string>
+
+    <string name="worktitle">Work Order Submission</string>
+    <string name="workLocation">Residence Hall</string>
+
+    <string-array name="reshall_array">
+        <item>Santoro</item>
+        <item>York East</item>
+        <item>York West</item>
+        <item>Potomac North</item>
+        <item>Potomac South</item>
+        <item>James River</item>
+        <item>Warwick</item>
+        <item>Rappahannock</item>
+    </string-array>
+
+
 
     <string name="home_second">Home Second</string>
 </resources>
