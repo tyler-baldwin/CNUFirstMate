@@ -1,12 +1,14 @@
 package com.example.cnufirstmate;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
     FirebaseFirestore db;
-
+    GoogleSignInAccount account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient= GoogleSignIn.getClient(this, gso);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
         if(account == null){
             setContentView(R.layout.sign_in);
             findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else{
+
             setupWorkOrder();
         }
 
@@ -88,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 submitOrder();
-//                    DatabaseReference msgRef = database.getReference("message");
-//                    msgRef.setValue("Rappahannock");
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -103,6 +104,23 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+//       setProfileInfo();
+    }
+
+    private void setProfileInfo(){
+
+        TextView loginName = (TextView)findViewById(R.id.loginName);
+        TextView loginEmail = (TextView)findViewById(R.id.loginEmail);
+
+        String personName = account.getDisplayName();
+        String personEmail = account.getEmail();
+        String personId = account.getId();
+        Uri personPhoto = account.getPhotoUrl();
+
+        loginName.setText(personName);
+        loginEmail.setText(personEmail);
+
     }
 
     private void submitOrder(){
@@ -137,19 +155,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFirestore() {
         db = FirebaseFirestore.getInstance();
-//        db.setPersistenceEnabled(true);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            Toast n = new Toast("task");
+
+
             setupWorkOrder();
         }
     }

@@ -15,8 +15,10 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/building"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.268" />
 
     <Spinner
         android:id="@+id/reshall_spinner"
@@ -39,7 +41,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
             android:hint="Building" />
     </com.google.android.material.textfield.TextInputLayout>
 
