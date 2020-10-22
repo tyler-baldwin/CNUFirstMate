@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,21 +45,24 @@ public class MainActivity extends AppCompatActivity {
     SignInButton signInButton;
     private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
+    private String fname;
+    private String lname;
     FirebaseFirestore db;
     GoogleSignInAccount account;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initFirestore();
 
-        signInButton= findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.sign_in_button);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mGoogleSignInClient= GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account == null){
+        if (account == null) {
             setContentView(R.layout.sign_in);
             findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,17 +74,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-        else{
-
+        } else {
             setupWorkOrder();
         }
 
 
-
     }
 
-    public void setupWorkOrder(){
+    public void setupWorkOrder() {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,26 +105,35 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-//       setProfileInfo();
+        account = GoogleSignIn.getLastSignedInAccount(this);
+//       setProfileInfo(account);
     }
 
-    private void setProfileInfo(){
+    private void setProfileInfo(GoogleSignInAccount acc) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView loginName = (TextView) headerView.findViewById(R.id.loginName);
+//        loginName.setText("Your Text Here");
 
-        TextView loginName = (TextView)findViewById(R.id.loginName);
-        TextView loginEmail = (TextView)findViewById(R.id.loginEmail);
 
-        String personName = account.getDisplayName();
-        String personEmail = account.getEmail();
-        String personId = account.getId();
-        Uri personPhoto = account.getPhotoUrl();
+//        TextView loginEmail = (TextView)findViewById(R.id.loginEmail);
 
+//        GoogleSignIn.getLastSignedInAccount(this);
+
+        String personName = acc.getDisplayName();
+//        TextView loginName = (TextView) findViewById(R.id.loginName);
         loginName.setText(personName);
-        loginEmail.setText(personEmail);
+
+//        String personEmail = account.getEmail();
+//        String personId = account.getId();
+//        Uri personPhoto = account.getPhotoUrl();
+
+//        loginName.setText(personName);
+//        loginEmail.setText(personEmail);
 
     }
 
-    private void submitOrder(){
+    private void submitOrder() {
         Map<String, Object> orderMap = new HashMap<>();
         TextInputLayout building = findViewById(R.id.building);
         String buildingText = building.getEditText().getText().toString();
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         String roomText = room.getEditText().getText().toString();
         TextInputLayout issue = findViewById(R.id.issue);
         String issueText = issue.getEditText().getText().toString();
-        orderMap.put("first","TODO");
+        orderMap.put("first", "TODO");
         orderMap.put("last", "TODO");
         orderMap.put("building", buildingText);
         orderMap.put("room", roomText);
@@ -165,9 +175,20 @@ public class MainActivity extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
+            handleSignInResult(task);
 
             setupWorkOrder();
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            String personName = account.getDisplayName();
+            setProfileInfo(account);
+        } catch (ApiException e) {
+            System.out.print("caught exception");
         }
     }
 
