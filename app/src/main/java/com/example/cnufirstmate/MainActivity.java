@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         account = GoogleSignIn.getLastSignedInAccount(this);
-//       setProfileInfo(account);
+       setProfileInfo(account);
     }
 
     private void setProfileInfo(GoogleSignInAccount acc) {
@@ -120,9 +120,12 @@ public class MainActivity extends AppCompatActivity {
 
 //        GoogleSignIn.getLastSignedInAccount(this);
 
-        String personName = acc.getDisplayName();
+        if(acc != null) {
+            String personName = acc.getDisplayName();
+            loginName.setText(personName);
+        }
 //        TextView loginName = (TextView) findViewById(R.id.loginName);
-        loginName.setText(personName);
+
 
 //        String personEmail = account.getEmail();
 //        String personId = account.getId();
