@@ -17,49 +17,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <Spinner
         android:id="@+id/reshall_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/building"
+        app:layout_constraintBottom_toTopOf="@+id/room"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workTitle" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/building"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/workTitle"
-        app:layout_constraintStart_toStartOf="@+id/workTitle"
-        app:layout_constraintTop_toBottomOf="@id/workTitle">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Building" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/issue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/building">
+        app:layout_constraintTop_toBottomOf="@+id/reshall_spinner">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Room Num"
-            app:layout_constraintTop_toBottomOf="@+id/building" />
+             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

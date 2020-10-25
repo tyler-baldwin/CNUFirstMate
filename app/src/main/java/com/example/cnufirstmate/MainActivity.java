@@ -45,6 +45,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,14 +169,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void submitOrder() {
         Map<String, Object> orderMap = new HashMap<>();
-        TextInputLayout building = findViewById(R.id.building);
-        String buildingText = building.getEditText().getText().toString();
+//        TextInputLayout building = findViewById(R.id.building);
+//        String buildingText = building.getEditText().getText().toString();
+        Spinner buildingSpinner = (Spinner)findViewById(R.id.reshall_spinner);
+        String buildingText = (String)buildingSpinner.getSelectedItem();
         TextInputLayout room = findViewById(R.id.room);
         String roomText = room.getEditText().getText().toString();
         TextInputLayout issue = findViewById(R.id.issue);
         String issueText = issue.getEditText().getText().toString();
+        Date currentTime = Calendar.getInstance().getTime();
         orderMap.put("name", name);
         orderMap.put("email", email);
+        orderMap.put("date",currentTime);
         orderMap.put("building", buildingText);
         orderMap.put("room", roomText);
         orderMap.put("issue", issueText);
