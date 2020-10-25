@@ -1,5 +1,6 @@
 package com.example.cnufirstmate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +40,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     SignInButton signInButton;
     private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
-    private String fname;
-    private String lname;
+    private String name;
+    private String email;
     FirebaseFirestore db;
     GoogleSignInAccount account;
 
@@ -111,23 +116,39 @@ public class MainActivity extends AppCompatActivity {
 
     private void setProfileInfo(GoogleSignInAccount acc) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        TextView loginName = (TextView) headerView.findViewById(R.id.loginName);
+        //sometimes it is slow to inflate so this can catch those instances
+        try {
+            View headerView = navigationView.getHeaderView(0);
+            TextView loginName = (TextView) headerView.findViewById(R.id.loginName);
+            TextView loginEmail = (TextView)headerView.findViewById(R.id.loginEmail);
+            ImageView loginURL = headerView.findViewById(R.id.loginURL);
+            if(acc != null) {
+                String personName = acc.getDisplayName();
+                String personEmail = acc.getEmail();
+                name = personName;
+                email = personEmail;
+                Uri personURL = acc.getPhotoUrl();
+                loginName.setText(personName);
+                loginEmail.setText(personEmail);
+                loginURL.setImageURI(null);
+                loginURL.setImageURI(personURL);
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText( getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
+
+        }
 //        loginName.setText("Your Text Here");
 
 
-//        TextView loginEmail = (TextView)findViewById(R.id.loginEmail);
 
 //        GoogleSignIn.getLastSignedInAccount(this);
 
-        if(acc != null) {
-            String personName = acc.getDisplayName();
-            loginName.setText(personName);
-        }
+
 //        TextView loginName = (TextView) findViewById(R.id.loginName);
 
 
-//        String personEmail = account.getEmail();
 //        String personId = account.getId();
 //        Uri personPhoto = account.getPhotoUrl();
 
@@ -144,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
         String roomText = room.getEditText().getText().toString();
         TextInputLayout issue = findViewById(R.id.issue);
         String issueText = issue.getEditText().getText().toString();
-        orderMap.put("first", "TODO");
-        orderMap.put("last", "TODO");
+        orderMap.put("name", name);
+        orderMap.put("email", email);
         orderMap.put("building", buildingText);
         orderMap.put("room", roomText);
         orderMap.put("issue", issueText);
