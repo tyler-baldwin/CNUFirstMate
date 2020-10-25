@@ -13,10 +13,12 @@
         android:layout_height="wrap_content"
         android:text="@string/worktitle"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/building"
+        app:layout_constraintBottom_toTopOf="@+id/reshall_spinner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.148" />
 
     <Spinner
         android:id="@+id/reshall_spinner"
@@ -25,6 +27,7 @@
         android:layout_marginTop="35dp"
         app:layout_constraintBottom_toTopOf="@+id/building"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workTitle" />
 
@@ -33,8 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/workTitle"
+        app:layout_constraintStart_toStartOf="@+id/workTitle"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -74,4 +77,5 @@
             android:layout_height="wrap_content"
             android:hint="Issue" />
     </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

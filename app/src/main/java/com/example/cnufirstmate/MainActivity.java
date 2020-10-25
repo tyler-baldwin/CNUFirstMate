@@ -8,8 +8,10 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,9 +114,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
         account = GoogleSignIn.getLastSignedInAccount(this);
        setProfileInfo(account);
     }
+
+
 
     private void setProfileInfo(GoogleSignInAccount acc) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
