@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -92,6 +94,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setUpLogIn() {
+        setContentView(R.layout.sign_in);
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.sign_in_button:
+                        doSignIn();
+                        break;
+                }
+            }
+        });
+    }
+
+
     public void setupWorkOrder() {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -119,20 +136,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         account = GoogleSignIn.getLastSignedInAccount(this);
-       setProfileInfo(account);
+        setProfileInfo(account);
     }
 
 
-
     private void setProfileInfo(GoogleSignInAccount acc) {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //sometimes it is slow to inflate so this can catch those instances
         try {
-            View headerView = navigationView.getHeaderView(0);
-            TextView loginName = (TextView) headerView.findViewById(R.id.loginName);
-            TextView loginEmail = (TextView)headerView.findViewById(R.id.loginEmail);
-            ImageView loginURL = headerView.findViewById(R.id.loginURL);
-            if(acc != null) {
+
+            if (acc != null) {
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                View headerView = navigationView.getHeaderView(0);
+                TextView loginName = headerView.findViewById(R.id.loginName);
+                TextView loginEmail = (TextView) headerView.findViewById(R.id.loginEmail);
+                ImageView loginURL = headerView.findViewById(R.id.loginURL);
                 String personName = acc.getDisplayName();
                 String personEmail = acc.getEmail();
                 name = personName;
@@ -144,35 +161,15 @@ public class MainActivity extends AppCompatActivity {
                 loginURL.setImageURI(personURL);
             }
 
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
         }
-        catch(Exception e){
-            Toast.makeText( getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
-
-        }
-//        loginName.setText("Your Text Here");
-
-
-
-//        GoogleSignIn.getLastSignedInAccount(this);
-
-
-//        TextView loginName = (TextView) findViewById(R.id.loginName);
-
-
-//        String personId = account.getId();
-//        Uri personPhoto = account.getPhotoUrl();
-
-//        loginName.setText(personName);
-//        loginEmail.setText(personEmail);
-
     }
 
     private void submitOrder() {
         Map<String, Object> orderMap = new HashMap<>();
-//        TextInputLayout building = findViewById(R.id.building);
-//        String buildingText = building.getEditText().getText().toString();
-        Spinner buildingSpinner = (Spinner)findViewById(R.id.reshall_spinner);
-        String buildingText = (String)buildingSpinner.getSelectedItem();
+        Spinner buildingSpinner = (Spinner) findViewById(R.id.reshall_spinner);
+        String buildingText = (String) buildingSpinner.getSelectedItem();
         TextInputLayout room = findViewById(R.id.room);
         String roomText = room.getEditText().getText().toString();
         TextInputLayout issue = findViewById(R.id.issue);
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         Date currentTime = Calendar.getInstance().getTime();
         orderMap.put("name", name);
         orderMap.put("email", email);
-        orderMap.put("date",currentTime);
+        orderMap.put("date", currentTime);
         orderMap.put("building", buildingText);
         orderMap.put("room", roomText);
         orderMap.put("issue", issueText);
@@ -210,8 +207,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
+            // The Task returned from this call is always completed, need listener
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
 
@@ -235,6 +231,26 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.logout:
+//                logOut();
+//                break;
+//        }
+//        return true;
+//    }
+
+    private void logOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        setUpLogIn();
+                    }
+                });
     }
 
     @Override
