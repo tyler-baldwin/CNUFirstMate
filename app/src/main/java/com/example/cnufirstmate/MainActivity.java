@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     private String email;
     FirebaseFirestore db;
     GoogleSignInAccount account;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,15 +232,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.logout:
-//                logOut();
-//                break;
-//        }
-//        return true;
-//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                logOut();
+                break;
+            case android.R.id.home:
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                        || super.onSupportNavigateUp();
+
+        }
+        return true;
+    }
 
     private void logOut() {
         mGoogleSignInClient.signOut()
@@ -252,13 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
+    
 
     public void doSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

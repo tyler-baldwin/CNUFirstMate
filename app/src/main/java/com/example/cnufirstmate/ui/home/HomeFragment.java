@@ -35,6 +35,15 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.logout:
+//                logOut();
+//                break;
+//        }
+//        return true;
+//    }
     private void setupSpinner(){
         List<String> spinnerArray =  new ArrayList<String>();
         spinnerArray.add("Santoro");
