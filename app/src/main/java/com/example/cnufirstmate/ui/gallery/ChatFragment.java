@@ -35,9 +35,10 @@ public class ChatFragment extends Fragment {
 
     private void initFirestore() {
         db = FirebaseFirestore.getInstance();
-        mQuery = mFirestore.collection("groups")
-                .orderBy("sentat", Query.Direction.DESCENDING)
-                .limit(LIMIT);
+//        mQuery = mFirestore.collection("groups")
+//                .orderBy("sentat", Query.Direction.DESCENDING)
+//                .limit(LIMIT);
+//        db.collection("groups"
     }
 
 
