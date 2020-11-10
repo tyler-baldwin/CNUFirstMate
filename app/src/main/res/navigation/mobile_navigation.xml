@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.cnufirstmate.ui.home.HomeFragment"
+        android:name="com.example.cnufirstmate.ui.workOrder.WorkOrderFragment"
         android:label="@string/menu_work_order"
         tools:layout="@layout/fragment_work_order"/>
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.cnufirstmate.ui.gallery.ChatFragment"
+        android:name="com.example.cnufirstmate.ui.Chat.ChatFragment"
         android:label="@string/menu_res_life"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_groups" />
 
     <fragment
         android:id="@+id/nav_slideshow"

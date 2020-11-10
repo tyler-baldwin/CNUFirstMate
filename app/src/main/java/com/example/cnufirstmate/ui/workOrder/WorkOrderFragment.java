@@ -1,4 +1,4 @@
-package com.example.cnufirstmate.ui.home;
+package com.example.cnufirstmate.ui.workOrder;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +17,14 @@ import com.example.cnufirstmate.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class WorkOrderFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private WorkOrderViewModel workOrderViewModel;
     Spinner dropdown;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        workOrderViewModel =
+                ViewModelProviders.of(this).get(WorkOrderViewModel.class);
         View root = inflater.inflate(R.layout.fragment_work_order, container, false);
 
         dropdown = root.findViewById(R.id.reshall_spinner);
