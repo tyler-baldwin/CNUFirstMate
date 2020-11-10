@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInAccount account;
     private FirebaseAuth mAuth;
     FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        Button fab = findViewById(R.id.wosubmit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
         }
     }
-    private void saveUser(String uid){
+
+    private void saveUser(String uid) {
         Map<String, Object> orderMap = new HashMap<>();
         orderMap.put("uid", uid);
         orderMap.put("name", name);
@@ -254,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     @Override
     public void onStart() {
         super.onStart();
