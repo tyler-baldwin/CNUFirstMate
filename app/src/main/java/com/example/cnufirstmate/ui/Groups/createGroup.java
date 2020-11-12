@@ -17,8 +17,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class createGroup extends AppCompatActivity {
     private EditText groupName;
+    private ArrayList<String> members;
+
     private ChatGroupRepo chatGroupRepo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +69,7 @@ public class createGroup extends AppCompatActivity {
     }
     private void createGroup() {
         chatGroupRepo.createGroup(
-                groupName.getText().toString(),
+                groupName.getText().toString(), members,
                 new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -73,11 +79,7 @@ public class createGroup extends AppCompatActivity {
                 new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(
-                                createGroup.this,
-                                "Error",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        Toast.makeText(createGroup.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -85,6 +87,24 @@ public class createGroup extends AppCompatActivity {
 
     private boolean isRoomEmpty() {
         groupName = findViewById(R.id.room_name);
+        EditText ed = findViewById(R.id.members);
+        String text = ed.getText().toString();
+        ArrayList<String> arr = new ArrayList<>();//Assuming no spaces and user is using one comma between numbers
+//        int i=0;
+        Toast.makeText(createGroup.this, text, Toast.LENGTH_SHORT).show();
+
+        while(text!=null && text.length()>0) {
+            if(text.contains(",")){
+                arr.add(text.substring(0,text.indexOf(",")));
+                text = text.substring(text.indexOf(",")+1);
+            }
+            else {
+                arr.add(text);
+                break;
+            }
+//            i++;
+        }
+        members = arr;
         return groupName.getText().toString().isEmpty();
     }
 }

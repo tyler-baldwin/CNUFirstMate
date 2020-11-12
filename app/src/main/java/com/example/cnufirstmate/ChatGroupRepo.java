@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +21,12 @@ public class ChatGroupRepo {
     }
 
 
-    public void createGroup(String name,
+    public void createGroup(String name, ArrayList<String> arr,
                            final OnSuccessListener<DocumentReference> successCallback,
                            final OnFailureListener failureCallback) {
         Map<String, Object> Group = new HashMap<>();
         Group.put("name", name);
-//        Group.put("Members", )
+        Group.put("Members", arr);
         db.collection("Groups")
                 .add(Group)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
