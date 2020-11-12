@@ -26,6 +26,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.cnufirstmate.ui.Groups.createGroup;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private String name;
     private String email;
     private FirebaseFirestore db;
-    private GoogleSignInAccount account;
+    GoogleSignInAccount account;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
 
@@ -76,21 +77,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initFirestore();
-//        if (account == null) {
-//            setContentView(R.layout.sign_in);
-//            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    switch (view.getId()) {
-//                        case R.id.sign_in_button:
-//                            doSignIn();
-//                            break;
-//                    }
-//                }
-//            });
-//        } else {
-//            setupWorkOrder();
-//        }
+        account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account == null) {
+            setContentView(R.layout.sign_in);
+            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.sign_in_button:
+                            doSignIn();
+                            break;
+                    }
+                }
+            });
+        } else {
+            setupWorkOrder(account);
+        }
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestProfile()
@@ -121,19 +123,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Button fab = findViewById(R.id.wosubmit);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                submitOrder();
-            }
-        });
+        try {
+            Button fab = findViewById(R.id.wosubmit);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    submitOrder();
+                }
+            });
+        }
+        catch(Exception e){
+
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 navController.getGraph())
@@ -168,20 +173,19 @@ public class MainActivity extends AppCompatActivity {
                 loginURL.setImageURI(personURL);
             } else {
                 Toast.makeText(getApplicationContext(), "No Account Somehow", Toast.LENGTH_LONG).show();
-
             }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
         }
     }
 
-//    private void saveUser(String uid) {
-//        Map<String, Object> orderMap = new HashMap<>();
-//        orderMap.put("uid", uid);
-//        orderMap.put("name", name);
-//        orderMap.put("email", email);
-//
-//    }
+    private void saveUser(String uid) {
+        Map<String, Object> orderMap = new HashMap<>();
+        orderMap.put("uid", uid);
+        orderMap.put("name", name);
+        orderMap.put("email", email);
+
+    }
 
 
     private void submitOrder() {
@@ -265,22 +269,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        GoogleSignInAccount startAcc = GoogleSignIn.getLastSignedInAccount(this);
-        if (startAcc == null) {
-            setContentView(R.layout.sign_in);
-            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.sign_in_button:
-                            doSignIn();
-                            break;
-                    }
-                }
-            });
-        } else {
-            setupWorkOrder(startAcc);
-        }
+//        GoogleSignInAccount startAcc = GoogleSignIn.getLastSignedInAccount(this);
+//        if (startAcc == null) {
+//            setContentView(R.layout.sign_in);
+//            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    switch (view.getId()) {
+//                        case R.id.sign_in_button:
+//                            doSignIn();
+//                            break;
+//                    }
+//                }
+//            });
+//        } else {
+//            setupWorkOrder(startAcc);
+//        }
         // Check if user is signed in (non-null) and update UI accordingly.
 //        FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
@@ -336,7 +340,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         account = null;
-                        setUpLogIn();
+                        name = null;
+                        email = null;
+                        Intent intent=new Intent(getBaseContext(), MainActivity.class);
+                        startActivity(intent);
                     }
                 });
     }

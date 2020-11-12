@@ -25,7 +25,7 @@ public class ChatGroupRepo {
                            final OnFailureListener failureCallback) {
         Map<String, Object> Group = new HashMap<>();
         Group.put("name", name);
-
+//        Group.put("Members", )
         db.collection("Groups")
                 .add(Group)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
