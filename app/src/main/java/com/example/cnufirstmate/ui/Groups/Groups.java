@@ -1,5 +1,6 @@
 package com.example.cnufirstmate.ui.Groups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +36,9 @@ public class Groups extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("Groups", "Launch create a room screen");
-                
+                Intent intent = new Intent(getActivity(), createGroup.class);
+                startActivity(intent);
+
             }
         });
     }

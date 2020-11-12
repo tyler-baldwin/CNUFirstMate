@@ -62,40 +62,42 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private int RC_SIGN_IN = 1001;
     SignInButton signInButton;
+
     private AppBarConfiguration mAppBarConfiguration;
     private GoogleSignInClient mGoogleSignInClient;
     private String name;
     private String email;
-    FirebaseFirestore db;
-    GoogleSignInAccount account;
+    private FirebaseFirestore db;
+    private GoogleSignInAccount account;
     private FirebaseAuth mAuth;
-    FirebaseUser user;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initFirestore();
+//        if (account == null) {
+//            setContentView(R.layout.sign_in);
+//            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    switch (view.getId()) {
+//                        case R.id.sign_in_button:
+//                            doSignIn();
+//                            break;
+//                    }
+//                }
+//            });
+//        } else {
+//            setupWorkOrder();
+//        }
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
+                .requestProfile()
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) {
-            setContentView(R.layout.sign_in);
-            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.sign_in_button:
-                            doSignIn();
-                            break;
-                    }
-                }
-            });
-        } else {
-            setupWorkOrder();
-        }
+//        account = GoogleSignIn.getLastSignedInAccount(this);
 
 
     }
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setupWorkOrder() {
+    public void setupWorkOrder(GoogleSignInAccount acc) {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+//        account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(acc);
     }
 
 
@@ -164,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
                 loginEmail.setText(personEmail);
                 loginURL.setImageURI(null);
                 loginURL.setImageURI(personURL);
+            } else {
+                Toast.makeText(getApplicationContext(), "No Account Somehow", Toast.LENGTH_LONG).show();
+
             }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "bruh moment inflator slow", Toast.LENGTH_LONG).show();
@@ -225,29 +230,28 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                account = task.getResult(ApiException.class);
                 Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
 //                saveUser(account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("TAG", "Google sign in failed", e);
+                Log.w("sif", "Google sign in failed", e);
                 // ...
             }
             handleSignInResult(task);
-            setupWorkOrder();
+//            setupWorkOrder(account);
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-//        AuthCredential credentialal = GoogleAuthProvider.getCredential(idToken, null);
-//        mAuth.signInWithCredential(credential)
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            GoogleSignInAccount accTask = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-            updateUI(account);
+            setupWorkOrder(accTask);
+//            updateUI(accTask);
         } catch (ApiException e) {
-            System.out.print("caught exception");
+            Log.w("Signing in", "signInResult:failed code=" + e.getStatusCode());
         }
     }
 
@@ -261,6 +265,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        GoogleSignInAccount startAcc = GoogleSignIn.getLastSignedInAccount(this);
+        if (startAcc == null) {
+            setContentView(R.layout.sign_in);
+            findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.sign_in_button:
+                            doSignIn();
+                            break;
+                    }
+                }
+            });
+        } else {
+            setupWorkOrder(startAcc);
+        }
         // Check if user is signed in (non-null) and update UI accordingly.
 //        FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
@@ -315,11 +335,11 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        account = null;
                         setUpLogIn();
                     }
                 });
     }
-
 
 
 }
