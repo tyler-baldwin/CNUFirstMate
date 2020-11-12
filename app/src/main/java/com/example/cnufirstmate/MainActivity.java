@@ -132,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                navController.getGraph())
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -170,13 +170,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void saveUser(String uid) {
-        Map<String, Object> orderMap = new HashMap<>();
-        orderMap.put("uid", uid);
-        orderMap.put("name", name);
-        orderMap.put("email", email);
-
-    }
+//    private void saveUser(String uid) {
+//        Map<String, Object> orderMap = new HashMap<>();
+//        orderMap.put("uid", uid);
+//        orderMap.put("name", name);
+//        orderMap.put("email", email);
+//
+//    }
 
 
     private void submitOrder() {
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
-                saveUser(account.getId());
+//                saveUser(account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -305,6 +305,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void doSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
     private void logOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -316,8 +321,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void doSignIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
+
 }

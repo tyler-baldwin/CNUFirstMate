@@ -16,6 +16,9 @@
     <string name="worktitle">Work Order Submission</string>
     <string name="workLocation">Residence Hall</string>
 
+    <string name="hint_create_room">Enter room name&#8230;</string>
+    <string name="create_room">Create room</string>
+    <string name="error_empty_room">Please enter a room name</string>
 
     <string name="home_second">Home Second</string>
 </resources>

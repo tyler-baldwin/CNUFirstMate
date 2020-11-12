@@ -11,10 +11,12 @@
         android:id="@+id/workTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/worktitle"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/reshall_spinner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
@@ -26,10 +28,9 @@
         android:layout_marginTop="35dp"
         app:layout_constraintBottom_toTopOf="@+id/room"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workTitle" />
-
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/room"
@@ -74,7 +75,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/issue"
-        app:layout_constraintVertical_bias="0.428"
-       />
+        app:layout_constraintVertical_bias="0.387" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
