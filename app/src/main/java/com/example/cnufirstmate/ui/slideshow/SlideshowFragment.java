@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,12 @@ public class SlideshowFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        WebView wv = root.findViewById(R.id.fragment_webview);
+        wv.getSettings().setJavaScriptEnabled(true);
+
+        wv.setWebViewClient(new WebViewClient());
+
+        wv.loadUrl("https://cnu.edu");
         return root;
     }
 }
