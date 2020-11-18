@@ -1,4 +1,4 @@
-package com.example.cnufirstmate.ui.slideshow;
+package com.example.cnufirstmate.ui.cnu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
