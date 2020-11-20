@@ -3,6 +3,7 @@ package com.example.cnufirstmate.ui.Groups;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,6 +74,10 @@ public class createGroup extends AppCompatActivity {
                 new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        Intent intent = new Intent(createGroup.this, groupActivity.class);
+                        intent.putExtra(groupActivity.GROUP_ID, documentReference.getId());
+                        intent.putExtra(groupActivity.GROUP_NAME, groupName.getText().toString());
+                        startActivity(intent);
                         finish();
                     }
                 },
