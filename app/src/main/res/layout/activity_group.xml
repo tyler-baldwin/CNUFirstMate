@@ -10,5 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="154dp" />
+        tools:layout_editor_absoluteY="154dp"
+        android:id="@+id/rooms"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
