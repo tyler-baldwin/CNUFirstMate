@@ -27,7 +27,6 @@ public class ChatFragment extends Fragment {
 
         initFirestore();
         mFirestore = FirebaseFirestore.getInstance();
-
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         return view;
     }

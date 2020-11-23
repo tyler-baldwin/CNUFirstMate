@@ -5,7 +5,9 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,5 +43,11 @@ public class ChatGroupRepo {
                         failureCallback.onFailure(e);
                     }
                 });
+    }
+
+    public void getRooms(EventListener<QuerySnapshot> listener) {
+        db.collection("Groups")
+                .orderBy("name")
+                .addSnapshotListener(listener);
     }
 }
