@@ -95,7 +95,6 @@ public class createGroup extends AppCompatActivity {
         EditText ed = findViewById(R.id.members);
         String text = ed.getText().toString();
         ArrayList<String> arr = new ArrayList<>();//Assuming no spaces and user is using one comma between numbers
-//        int i=0;
         Toast.makeText(createGroup.this, text, Toast.LENGTH_SHORT).show();
 
         while(text!=null && text.length()>0) {
@@ -107,7 +106,6 @@ public class createGroup extends AppCompatActivity {
                 arr.add(text);
                 break;
             }
-//            i++;
         }
         
         members = arr;

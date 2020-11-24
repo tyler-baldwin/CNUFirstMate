@@ -44,33 +44,33 @@ public class ChatFragment extends Fragment {
         initFirestore();
         mFirestore = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        recyclerView = getView().findViewById(R.id.rooms);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getChatRooms();
+//        recyclerView = getView().findViewById(R.id.rooms);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        getChatRooms();
         return view;
     }
 
-    private void getChatRooms() {
-        chatGroupRepo.getRooms(new EventListener<QuerySnapshot>() {
-
-            @Override
-            public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.e("ChatFrag", "Listen failed.", e);
-                    return;
-                }
-
-                List<ChatRoom> rooms = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : snapshots) {
-                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
-                    rooms.add(new ChatRoom(doc.getId(), doc.getString("name")));
-                }
-
-                adapter = new ChatRoomAdapter(rooms);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
+//    private void getChatRooms() {
+//        chatGroupRepo.getRooms(new EventListener<QuerySnapshot>() {
+//
+//            @Override
+//            public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
+//                if (e != null) {
+//                    Log.e("ChatFrag", "Listen failed.", e);
+//                    return;
+//                }
+//
+//                List<ChatRoom> rooms = new ArrayList<>();
+//                for (QueryDocumentSnapshot doc : snapshots) {
+//                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
+//                    rooms.add(new ChatRoom(doc.getId(), doc.getString("name")));
+//                }
+//
+//                adapter = new ChatRoomAdapter(rooms);
+//                recyclerView.setAdapter(adapter);
+//            }
+//        });
+//    }
 
 
     private void initFirestore() {

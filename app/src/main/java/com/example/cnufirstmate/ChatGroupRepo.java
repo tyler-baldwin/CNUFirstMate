@@ -47,7 +47,7 @@ public class ChatGroupRepo {
 
     public void getRooms(EventListener<QuerySnapshot> listener) {
         db.collection("Groups")
-                .orderBy("name")
+//                .orderBy("name")
                 .addSnapshotListener(listener);
     }
 }

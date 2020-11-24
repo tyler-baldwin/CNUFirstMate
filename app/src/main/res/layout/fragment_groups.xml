@@ -8,6 +8,20 @@
     tools:context=".ui.Groups.Groups">
     >
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/grouplist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newgroup"
         android:layout_width="wrap_content"
@@ -18,5 +32,6 @@
         app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintVertical_bias="0.953"
+        android:contentDescription="Add Group" />
 </androidx.constraintlayout.widget.ConstraintLayout>
