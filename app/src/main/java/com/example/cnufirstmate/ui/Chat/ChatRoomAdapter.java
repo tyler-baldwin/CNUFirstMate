@@ -14,9 +14,10 @@ import java.util.List;
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder> {
 
     private List<ChatRoom> chatRooms;
-
-    public ChatRoomAdapter(List<ChatRoom> chatRooms) {
+    private OnChatRoomClickListener listener;
+    public ChatRoomAdapter(List<ChatRoom> chatRooms, OnChatRoomClickListener listener) {
         this.chatRooms = chatRooms;
+        this.listener = listener;
     }
 
     @Override
@@ -34,6 +35,10 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
         holder.bind(chatRooms.get(position));
     }
 
+    public interface OnChatRoomClickListener {
+        void onClick(ChatRoom chatRoom);
+    }
+
     @Override
     public int getItemCount() {
         return chatRooms.size();
@@ -46,6 +51,12 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
         public ChatRoomViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.item_chat_room_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(chatRoom);
+                }
+            });
         }
 
         public void bind(ChatRoom chatRoom) {

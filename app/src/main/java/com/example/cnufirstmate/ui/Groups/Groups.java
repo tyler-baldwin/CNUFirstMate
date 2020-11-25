@@ -47,23 +47,22 @@ public class Groups extends Fragment {
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
         //allows retrieval of info with helper class
         chatGroupRepo = new ChatGroupRepo(FirebaseFirestore.getInstance());
-
-//        mFirestore = FirebaseFirestore.getInstance();
-
-        //gets the recycler view and sets a manager to fill it
-
         return view;
     }
+
+    //Sets the adapter for the recycler view, calls the method to fill it out
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         createGroup = getView().findViewById(R.id.newgroup);
+        //gets the recycler view and sets a manager to fill it
         grouplist = getView().findViewById(R.id.grouplist);
         grouplist.setLayoutManager(new LinearLayoutManager(getActivity()));
         getChatRooms();
         initUI();
     }
 
-
+    //calls the database and asks for all the current groups
+    //TODO add personalization so the user can only access their chats
     private void getChatRooms() {
         chatGroupRepo.getRooms(new EventListener<QuerySnapshot>() {
 
@@ -80,11 +79,24 @@ public class Groups extends Fragment {
                     rooms.add(new ChatRoom(doc.getId(), doc.getString("name")));
                 }
 
-                adapter = new ChatRoomAdapter(rooms);
+                adapter = new ChatRoomAdapter(rooms,listener);
                 grouplist.setAdapter(adapter);
             }
         });
     }
+
+    /*This is a method to launch into the actual chat once clicked*/
+    ChatRoomAdapter.OnChatRoomClickListener listener = new ChatRoomAdapter.OnChatRoomClickListener() {
+        @Override
+        public void onClick(ChatRoom chatRoom) {
+            Intent intent = new Intent(getContext(), groupActivity.class);
+            intent.putExtra(groupActivity.GROUP_ID, chatRoom.getId());
+            intent.putExtra(groupActivity.GROUP_NAME, chatRoom.getName());
+            startActivity(intent);
+        }
+    };
+
+    //listens for the creategroup activity launch
     private void initUI() {
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
