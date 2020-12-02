@@ -50,4 +50,31 @@ public class ChatGroupRepo {
 //                .orderBy("name")
                 .addSnapshotListener(listener);
     }
+
+    public void addMessageToChatRoom(String groupId,
+                                     String senderId,
+                                     String message,
+                                     final OnSuccessListener<DocumentReference> successCallback,
+                                     final OnFailureListener failureCallback) {
+        Map<String, Object> msg = new HashMap<>();
+        msg.put("group_id", groupId);
+        msg.put("sender_id", senderId);
+        msg.put("message", message);
+        msg.put("sent", System.currentTimeMillis());
+
+        db.collection("message")
+                .add(msg)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        successCallback.onSuccess(documentReference);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        failureCallback.onFailure(e);
+                    }
+                });
+    }
 }
