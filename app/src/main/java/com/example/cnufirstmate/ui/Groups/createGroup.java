@@ -107,7 +107,6 @@ public class createGroup extends AppCompatActivity {
                 break;
             }
         }
-        
         members = arr;
         return groupName.getText().toString().isEmpty();
     }

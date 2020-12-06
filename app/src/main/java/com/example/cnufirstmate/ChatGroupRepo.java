@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -76,5 +77,12 @@ public class ChatGroupRepo {
                         failureCallback.onFailure(e);
                     }
                 });
+    }
+
+    public void getChats(String roomId, EventListener<QuerySnapshot> listener) {
+        db.collection("message")
+                .whereEqualTo("group_id", roomId)
+                .orderBy("sent", Query.Direction.DESCENDING)
+                .addSnapshotListener(listener);
     }
 }

@@ -2,10 +2,13 @@ package com.example.cnufirstmate.ui.Groups;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,10 +16,19 @@ import android.widget.Toast;
 
 import com.example.cnufirstmate.ChatGroupRepo;
 import com.example.cnufirstmate.R;
+import com.example.cnufirstmate.ui.Chat.Chat;
+import com.example.cnufirstmate.ui.Chat.ChatsAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class groupActivity extends AppCompatActivity {
 
@@ -25,6 +37,8 @@ public class groupActivity extends AppCompatActivity {
 
     private String groupID;
     private String groupName;
+    private RecyclerView chats;
+    private ChatsAdapter adapter;
 
     private static final String CURRENT_USER_KEY = "CURRENT_USER_KEY";
 
@@ -53,6 +67,7 @@ public class groupActivity extends AppCompatActivity {
             setTitle(groupName);
         }
         initUI();
+        showChatMessages();
     }
 
     private String getCurrentUserKey() {
@@ -78,6 +93,10 @@ public class groupActivity extends AppCompatActivity {
                 }
             }
         });
+        chats = findViewById(R.id.rooms);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setReverseLayout(true);
+        chats.setLayoutManager(manager);
     }
 
     private void addMessageToChatRoom() {
@@ -108,4 +127,31 @@ public class groupActivity extends AppCompatActivity {
         );
     }
 
+    private void showChatMessages() {
+        chatGroupRepo.getChats(groupID, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.e("ChatRoomActivity", "Listen failed.", e);
+                    return;
+                }
+
+                List<Chat> messages = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    messages.add(
+                            new Chat(
+                                    doc.getId(),
+                                    doc.getString("chat_room_id"),
+                                    doc.getString("sender_id"),
+                                    doc.getString("message"),
+                                    doc.getLong("sent")
+                            )
+                    );
+                }
+
+                adapter = new ChatsAdapter(messages, userId);
+                chats.setAdapter(adapter);
+            }
+        });
+    }
 }
