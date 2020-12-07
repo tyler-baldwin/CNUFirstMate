@@ -1,5 +1,10 @@
 package com.example.cnufirstmate;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -13,16 +18,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/*
+* This Class contains most of the network calls relating the the group and chat functionality*/
 public class ChatGroupRepo {
+    //For logging purposes
     private static final String TAG = "ChatGroupRepo";
-
+    //Reference to DB
     private FirebaseFirestore db;
-
     public ChatGroupRepo(FirebaseFirestore db) {
         this.db = db;
     }
-
+//Creates a group with That group name, a list of people including yourself and some listeners
 
     public void createGroup(String name, ArrayList<String> arr,
                            final OnSuccessListener<DocumentReference> successCallback,
@@ -48,8 +54,10 @@ public class ChatGroupRepo {
 
     public void getRooms(EventListener<QuerySnapshot> listener) {
         db.collection("Groups")
-//                .orderBy("name")
+                .whereArrayContains("Members", MainActivity.email)
+                .orderBy("name")
                 .addSnapshotListener(listener);
+//        Log.println(Log.ERROR,MainActivity.email,MainActivity.email);
     }
 
     public void addMessageToChatRoom(String groupId,

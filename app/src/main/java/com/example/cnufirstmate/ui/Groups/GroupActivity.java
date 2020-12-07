@@ -30,7 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class groupActivity extends AppCompatActivity {
+public class GroupActivity extends AppCompatActivity {
 
     public static final String GROUP_ID = "CHAT_ROOM_ID";
     public static final String GROUP_NAME = "CHAT_ROOM_NAME";
@@ -84,7 +84,7 @@ public class groupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (message.getText().toString().isEmpty()) {
                     Toast.makeText(
-                            groupActivity.this,
+                            GroupActivity.this,
                             getString(R.string.error_empty_message),
                             Toast.LENGTH_SHORT
                     ).show();
@@ -118,7 +118,7 @@ public class groupActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         send.setEnabled(true);
                         Toast.makeText(
-                                groupActivity.this,
+                                GroupActivity.this,
                                 getString(R.string.error_message_failed),
                                 Toast.LENGTH_SHORT
                         ).show();

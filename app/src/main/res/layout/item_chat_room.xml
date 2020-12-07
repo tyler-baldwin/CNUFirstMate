@@ -9,7 +9,8 @@
         android:id="@+id/item_chat_room_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:padding="8dp"/>
+        android:fontFamily="@font/roboto_medium"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </LinearLayout>

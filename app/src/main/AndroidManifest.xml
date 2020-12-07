@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.Groups.groupActivity"
+            android:name=".ui.Groups.GroupActivity"
             android:label="@string/title_activity_group">
             <intent-filter>
 
@@ -30,7 +30,7 @@
 
 
 
-        <activity android:name=".ui.Groups.createGroup" />
+        <activity android:name=".ui.Groups.CreateGroup" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

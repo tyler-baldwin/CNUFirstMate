@@ -13,20 +13,22 @@ import android.widget.Toast;
 
 import com.example.cnufirstmate.ChatGroupRepo;
 import com.example.cnufirstmate.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class createGroup extends AppCompatActivity {
+public class CreateGroup extends AppCompatActivity {
     private EditText groupName;
     private ArrayList<String> members;
-
     private ChatGroupRepo chatGroupRepo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class createGroup extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.create_room:
-                if (isRoomEmpty()) {
+                if (isRoomEmptyorInvalid()) {
                     Toast.makeText(this, getString(R.string.error_empty_room), Toast.LENGTH_SHORT).show();
                 } else {
                     createGroup();
@@ -68,15 +70,16 @@ public class createGroup extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private void createGroup() {
         chatGroupRepo.createGroup(
                 groupName.getText().toString(), members,
                 new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Intent intent = new Intent(createGroup.this, groupActivity.class);
-                        intent.putExtra(groupActivity.GROUP_ID, documentReference.getId());
-                        intent.putExtra(groupActivity.GROUP_NAME, groupName.getText().toString());
+                        Intent intent = new Intent(CreateGroup.this, GroupActivity.class);
+                        intent.putExtra(GroupActivity.GROUP_ID, documentReference.getId());
+                        intent.putExtra(GroupActivity.GROUP_NAME, groupName.getText().toString());
                         startActivity(intent);
                         finish();
                     }
@@ -84,30 +87,61 @@ public class createGroup extends AppCompatActivity {
                 new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(createGroup.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateGroup.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
     }
 
-    private boolean isRoomEmpty() {
+    private boolean isRoomEmptyorInvalid() {
         groupName = findViewById(R.id.room_name);
         EditText ed = findViewById(R.id.members);
         String text = ed.getText().toString();
+        String temp;
         ArrayList<String> arr = new ArrayList<>();//Assuming no spaces and user is using one comma between numbers
-        Toast.makeText(createGroup.this, text, Toast.LENGTH_SHORT).show();
 
-        while(text!=null && text.length()>0) {
-            if(text.contains(",")){
-                arr.add(text.substring(0,text.indexOf(",")));
-                text = text.substring(text.indexOf(",")+1);
-            }
-            else {
-                arr.add(text);
-                break;
+        while (text != null && text.length() > 0) {
+            if (text.contains(",")) {
+                if (isEmailValid(text.substring(0, text.indexOf(",")))) {
+                    arr.add(text.substring(0, text.indexOf(",")));
+                    text = text.substring(text.indexOf(",") + 1);
+                }
+                else{
+                    Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            } else {
+                if (isEmailValid(text)) {
+                    arr.add(text);
+                    break;
+                }
+                else{
+                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
             }
         }
+        //add yourself and then your members
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        arr.add(account.getEmail());
         members = arr;
         return groupName.getText().toString().isEmpty();
     }
+
+    /**
+     * method is used for checking valid email id format.
+     *
+     * @param email
+     * @return boolean true for valid false for invalid
+     */
+//    public static boolean isEmailValid(String email) {
+//        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+//        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(email);
+//        return matcher.matches();
+//    }
 }

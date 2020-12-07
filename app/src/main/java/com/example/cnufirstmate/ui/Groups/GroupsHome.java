@@ -29,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Groups extends Fragment {
+public class GroupsHome extends Fragment {
     private FloatingActionButton createGroup;
     private FirebaseFirestore mFirestore;
     private Query mQuery;
@@ -75,7 +75,7 @@ public class Groups extends Fragment {
 
                 List<ChatRoom> rooms = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
-                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
                     rooms.add(new ChatRoom(doc.getId(), doc.getString("name")));
                 }
 
@@ -89,9 +89,9 @@ public class Groups extends Fragment {
     ChatRoomAdapter.OnChatRoomClickListener listener = new ChatRoomAdapter.OnChatRoomClickListener() {
         @Override
         public void onClick(ChatRoom chatRoom) {
-            Intent intent = new Intent(getContext(), groupActivity.class);
-            intent.putExtra(groupActivity.GROUP_ID, chatRoom.getId());
-            intent.putExtra(groupActivity.GROUP_NAME, chatRoom.getName());
+            Intent intent = new Intent(getContext(), GroupActivity.class);
+            intent.putExtra(GroupActivity.GROUP_ID, chatRoom.getId());
+            intent.putExtra(GroupActivity.GROUP_NAME, chatRoom.getName());
             startActivity(intent);
         }
     };
@@ -102,7 +102,7 @@ public class Groups extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("Groups", "Launch create a room screen");
-                Intent intent = new Intent(getActivity(), createGroup.class);
+                Intent intent = new Intent(getActivity(), CreateGroup.class);
                 startActivity(intent);
             }
         });

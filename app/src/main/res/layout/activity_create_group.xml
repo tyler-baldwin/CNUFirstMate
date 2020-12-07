@@ -11,10 +11,14 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_create_room"
         android:layout_margin="8dp" />
+
     <EditText
         android:id="@+id/members"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/roboto_medium"
         android:hint="Add at least one member for this chat"
-        android:layout_margin="8dp" />
+        android:selectAllOnFocus="true"
+        android:singleLine="false" />
 </LinearLayout>
