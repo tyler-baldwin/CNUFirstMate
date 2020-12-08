@@ -18,6 +18,8 @@ import com.example.cnufirstmate.ChatGroupRepo;
 import com.example.cnufirstmate.R;
 import com.example.cnufirstmate.ui.Chat.Chat;
 import com.example.cnufirstmate.ui.Chat.ChatsAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,8 +41,6 @@ public class GroupActivity extends AppCompatActivity {
     private String groupName;
     private RecyclerView chats;
     private ChatsAdapter adapter;
-
-    private static final String CURRENT_USER_KEY = "CURRENT_USER_KEY";
 
     private String userId = "";
 
@@ -71,8 +71,9 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private String getCurrentUserKey() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return preferences.getString(CURRENT_USER_KEY, "");
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+       userId = (account.getEmail());
+       return userId;
     }
 
     private void initUI() {
@@ -95,8 +96,11 @@ public class GroupActivity extends AppCompatActivity {
         });
         chats = findViewById(R.id.rooms);
         LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setStackFromEnd(true);
         manager.setReverseLayout(true);
+
         chats.setLayoutManager(manager);
+
     }
 
     private void addMessageToChatRoom() {
@@ -135,7 +139,7 @@ public class GroupActivity extends AppCompatActivity {
                     Log.e("ChatRoomActivity", "Listen failed.", e);
                     return;
                 }
-
+                //gets list of chats for this group
                 List<Chat> messages = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
                     messages.add(
@@ -148,7 +152,7 @@ public class GroupActivity extends AppCompatActivity {
                             )
                     );
                 }
-
+                //hands over to chatsadapter so it can decide the view for the message
                 adapter = new ChatsAdapter(messages, userId);
                 chats.setAdapter(adapter);
             }

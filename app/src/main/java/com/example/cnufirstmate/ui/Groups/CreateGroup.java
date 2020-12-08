@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -101,25 +103,22 @@ public class CreateGroup extends AppCompatActivity {
         ArrayList<String> arr = new ArrayList<>();//Assuming no spaces and user is using one comma between numbers
 
         while (text != null && text.length() > 0) {
+            text = text.replace(" ", "");
             if (text.contains(",")) {
-                if (isEmailValid(text.substring(0, text.indexOf(",")))) {
+                if (isValidEmail(text.substring(0, text.indexOf(",")))) {
                     arr.add(text.substring(0, text.indexOf(",")));
                     text = text.substring(text.indexOf(",") + 1);
                 }
                 else{
-                    Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
-
                     Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
                     return true;
                 }
             } else {
-                if (isEmailValid(text)) {
+                if (isValidEmail(text)) {
                     arr.add(text);
                     break;
                 }
                 else{
-                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
                     Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -132,16 +131,9 @@ public class CreateGroup extends AppCompatActivity {
         return groupName.getText().toString().isEmpty();
     }
 
-    /**
-     * method is used for checking valid email id format.
-     *
-     * @param email
-     * @return boolean true for valid false for invalid
-     */
-//    public static boolean isEmailValid(String email) {
-//        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-//        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-//        Matcher matcher = pattern.matcher(email);
-//        return matcher.matches();
-//    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
 }
