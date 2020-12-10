@@ -108,8 +108,7 @@ public class CreateGroup extends AppCompatActivity {
                 if (isValidEmail(text.substring(0, text.indexOf(",")))) {
                     arr.add(text.substring(0, text.indexOf(",")));
                     text = text.substring(text.indexOf(",") + 1);
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -117,8 +116,7 @@ public class CreateGroup extends AppCompatActivity {
                 if (isValidEmail(text)) {
                     arr.add(text);
                     break;
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
                     return true;
                 }

@@ -35,10 +35,6 @@ public class Chat { private String id;
         return senderId;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
     public String getMessage() {
         return message;
     }

@@ -8,15 +8,15 @@
     tools:context=".ui.Groups.GroupActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rooms"
+        android:id="@+id/groupRecycler"
         android:layout_width="match_parent"
-        android:layout_height="614dp"
+        android:layout_height="match_parent"
+        android:windowSoftInputMode="adjustResize"
         app:layout_constraintBottom_toTopOf="@+id/message_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        android:layout_marginBottom="60dp"/>
 
     <ImageButton
         android:id="@+id/send_message"

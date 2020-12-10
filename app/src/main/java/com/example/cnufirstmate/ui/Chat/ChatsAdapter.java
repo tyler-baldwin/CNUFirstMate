@@ -23,6 +23,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatViewHold
         this.chats = chats;
         this.userId = userId;
     }
+
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,13 +44,12 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatViewHold
     }
 
 
-
-
     @Override
     public void onBindViewHolder(ChatViewHolder holder, int position) {
         holder.bind(chats.get(position));
     }
-
+    /*This determines whether or not it was sent by the user or another person and sets
+    * the layout accordingly*/
     @Override
     public int getItemViewType(int position) {
         if (chats.get(position).getSenderId().contentEquals(userId)) {
@@ -65,15 +65,18 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatViewHold
     }
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
+        //This will retrieve the layout and set the message and sender
         TextView message;
-
+        TextView chat_sender;
         public ChatViewHolder(View itemView) {
             super(itemView);
             message = itemView.findViewById(R.id.chat_message);
+            chat_sender = itemView.findViewById(R.id.chat_sender);
         }
 
         public void bind(Chat chat) {
             message.setText(chat.getMessage());
+            chat_sender.setText(chat.getSenderId());
         }
     }
 }

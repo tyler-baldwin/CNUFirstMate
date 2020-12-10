@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -39,7 +37,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private String groupID;
     private String groupName;
-    private RecyclerView chats;
+    private RecyclerView chatRecycler;
     private ChatsAdapter adapter;
 
     private String userId = "";
@@ -72,8 +70,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private String getCurrentUserKey() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-       userId = (account.getEmail());
-       return userId;
+        userId = (account.getEmail());
+        return userId;
     }
 
     private void initUI() {
@@ -94,12 +92,11 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
-        chats = findViewById(R.id.rooms);
+        chatRecycler = findViewById(R.id.groupRecycler);
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setStackFromEnd(true);
         manager.setReverseLayout(true);
 
-        chats.setLayoutManager(manager);
+        chatRecycler.setLayoutManager(manager);
 
     }
 
@@ -154,7 +151,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
                 //hands over to chatsadapter so it can decide the view for the message
                 adapter = new ChatsAdapter(messages, userId);
-                chats.setAdapter(adapter);
+                chatRecycler.setAdapter(adapter);
             }
         });
     }
