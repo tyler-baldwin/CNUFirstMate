@@ -17,13 +17,20 @@
             android:hint="@string/hint_create_room" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/members"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:fontFamily="@font/roboto_medium"
-        android:hint="Add at least one member for this chat"
-        android:selectAllOnFocus="true"
-        android:singleLine="false" />
+        android:layout_marginTop="23dp">
+
+        <EditText
+            android:id="@+id/members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:hint="Add at least one member for this chat"
+            android:selectAllOnFocus="true"
+            android:singleLine="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

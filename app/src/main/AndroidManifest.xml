@@ -3,9 +3,6 @@
     package="com.example.cnufirstmate">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,19 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.workOrder.AdminActivity"></activity>
         <activity
             android:name=".ui.Groups.GroupActivity"
             android:label="@string/title_activity_group">
             <intent-filter>
-
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
-
         <activity android:name=".ui.Groups.CreateGroup" />
         <activity
             android:name=".MainActivity"

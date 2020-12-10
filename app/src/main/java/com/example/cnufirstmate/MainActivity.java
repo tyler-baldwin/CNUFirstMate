@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.cnufirstmate.ui.workOrder.AdminActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -50,6 +51,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private int RC_SIGN_IN = 1001;
+    private int ADMIN_INT = 1002;
+
     SignInButton signInButton;
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -121,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     submitOrder();
                 }
             });
-        }
-        catch(Exception e){
+        } catch (Exception e) {
 
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -175,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //this method submits the order to the nosql database for review by admins
     private void submitOrder() {
         Map<String, Object> orderMap = new HashMap<>();
         Spinner buildingSpinner = (Spinner) findViewById(R.id.reshall_spinner);
@@ -208,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    //this is important to get an instance of the database
     private void initFirestore() {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -308,6 +311,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout:
                 logOut();
                 break;
+            case R.id.admin:
+                adminStart();
+                break;
             case android.R.id.home:
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
                 return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -316,12 +322,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
+//starts sign in activity
     public void doSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+    private void adminStart(){
+        Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
+        startActivityForResult(adminIntent, ADMIN_INT );
+    }
 
+    //logs out of current gmail acc
     private void logOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -330,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                         account = null;
                         name = null;
                         email = null;
-                        Intent intent=new Intent(getBaseContext(), MainActivity.class);
+                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
                         startActivity(intent);
                     }
                 });
