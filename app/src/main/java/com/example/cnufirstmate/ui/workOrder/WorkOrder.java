@@ -7,7 +7,14 @@ public class WorkOrder {
     private String issue;
     private String name;
     private String room;
-
+    public WorkOrder(String building, String date, String email, String issue, String name, String room) {
+        this.building = building;
+        this.date = date;
+        this.email = email;
+        this.issue = issue;
+        this.name = name;
+        this.room = room;
+    }
 
     public String getBuilding() {
         return building;
@@ -58,12 +65,5 @@ public class WorkOrder {
     }
 
 
-    public WorkOrder(String building, String date, String email, String issue, String name, String room) {
-        this.building = building;
-        this.date = date;
-        this.email = email;
-        this.issue = issue;
-        this.name = name;
-        this.room = room;
-    }
+
 }

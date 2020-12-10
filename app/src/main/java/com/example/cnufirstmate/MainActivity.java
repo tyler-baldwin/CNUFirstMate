@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             });
         } else {
             setupWorkOrder(account);
+
         }
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     public void setUpLogIn() {
         setContentView(R.layout.sign_in);
@@ -114,19 +116,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        try {
-            Button fab = findViewById(R.id.wosubmit);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    submitOrder();
-                }
-            });
-        } catch (Exception e) {
 
-        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -178,37 +169,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //this method submits the order to the nosql database for review by admins
-    private void submitOrder() {
-        Map<String, Object> orderMap = new HashMap<>();
-        Spinner buildingSpinner = (Spinner) findViewById(R.id.reshall_spinner);
-        String buildingText = (String) buildingSpinner.getSelectedItem();
-        TextInputLayout room = findViewById(R.id.room);
-        String roomText = room.getEditText().getText().toString();
-        TextInputLayout issue = findViewById(R.id.issue);
-        String issueText = issue.getEditText().getText().toString();
-        Date currentTime = Calendar.getInstance().getTime();
-        orderMap.put("name", name);
-        orderMap.put("email", email);
-        orderMap.put("date", currentTime);
-        orderMap.put("building", buildingText);
-        orderMap.put("room", roomText);
-        orderMap.put("issue", issueText);
-        // Add a new document with a generated ID
-        db.collection("orders")
-                .add(orderMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error adding document", e);
-                    }
-                });
-    }
+//    public void submitOrder() {
+//        Map<String, Object> orderMap = new HashMap<>();
+//        Spinner buildingSpinner = (Spinner) findViewById(R.id.reshall_spinner);
+//        String buildingText = (String) buildingSpinner.getSelectedItem();
+//        TextInputLayout room = findViewById(R.id.room);
+//        String roomText = room.getEditText().getText().toString();
+//        TextInputLayout issue = findViewById(R.id.issue);
+//        String issueText = issue.getEditText().getText().toString();
+//        Date currentTime = Calendar.getInstance().getTime();
+//        orderMap.put("name", name);
+//        orderMap.put("email", email);
+//        orderMap.put("date", currentTime);
+//        orderMap.put("building", buildingText);
+//        orderMap.put("room", roomText);
+//        orderMap.put("issue", issueText);
+//        // Add a new document with a generated ID
+//        db.collection("orders")
+//                .add(orderMap)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("TAG", "Error adding document", e);
+//                    }
+//                });
+//    }
 
     //this is important to get an instance of the database
     private void initFirestore() {
@@ -235,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 // ...
             }
             handleSignInResult(task);
+            //TODO this might brreak
 //            setupWorkOrder(account);
         }
     }
@@ -244,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInAccount accTask = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
             setupWorkOrder(accTask);
+
 //            updateUI(accTask);
         } catch (ApiException e) {
             Log.w("Signing in", "signInResult:failed code=" + e.getStatusCode());

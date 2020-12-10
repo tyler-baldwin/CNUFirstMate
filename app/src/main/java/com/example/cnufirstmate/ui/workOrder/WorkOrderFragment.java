@@ -1,10 +1,12 @@
 package com.example.cnufirstmate.ui.workOrder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -12,10 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.cnufirstmate.MainActivity;
 import com.example.cnufirstmate.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkOrderFragment extends Fragment {
 
@@ -29,18 +46,61 @@ public class WorkOrderFragment extends Fragment {
 
         dropdown = root.findViewById(R.id.reshall_spinner);
         setupSpinner();
+        Button fab = root.findViewById(R.id.wosubmit);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                submitOrder();
+            }
+        });
 
         return root;
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.logout:
-//                logOut();
-//                break;
-//        }
-//        return true;
-//    }
+
+    //this method submits the order to the nosql database for review by admins
+    public void submitOrder() {
+        Map<String, Object> orderMap = new HashMap<>();
+        Spinner buildingSpinner = (Spinner) getView().findViewById(R.id.reshall_spinner);
+        String buildingText = (String) buildingSpinner.getSelectedItem();
+        TextInputLayout room = getView().findViewById(R.id.room);
+        String roomText = room.getEditText().getText().toString();
+        TextInputLayout issue = getView().findViewById(R.id.issue);
+        String issueText = issue.getEditText().getText().toString();
+        Date currentTime = Calendar.getInstance().getTime();
+        GoogleSignInAccount acc = GoogleSignIn.getLastSignedInAccount(this.getContext());
+        String personName = acc.getDisplayName();
+        String personEmail = acc.getEmail();
+        String name = personName;
+        String email = personEmail;
+        orderMap.put("name", name);
+        orderMap.put("email", email);
+        orderMap.put("date", currentTime);
+        orderMap.put("building", buildingText);
+        orderMap.put("room", roomText);
+        orderMap.put("issue", issueText);
+        // Add a new document with a generated ID
+         FirebaseAuth mAuth;
+         FirebaseUser user;
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db.collection("orders")
+                .add(orderMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error adding document", e);
+                    }
+                });
+    }
     private void setupSpinner(){
         List<String> spinnerArray =  new ArrayList<String>();
         spinnerArray.add("Santoro");

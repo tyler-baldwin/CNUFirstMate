@@ -7,7 +7,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp">
+        android:layout_marginTop="10dp">
 
         <EditText
             android:id="@+id/room_name"
@@ -20,17 +20,16 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp">
+        android:layout_marginTop="10dp">
 
-        <EditText
-            android:id="@+id/members"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:fontFamily="@font/roboto_medium"
-            android:hint="Add at least one member for this chat"
-            android:selectAllOnFocus="true"
-            android:singleLine="false" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Enter members..."
+        android:singleLine="false" />
 
 </LinearLayout>

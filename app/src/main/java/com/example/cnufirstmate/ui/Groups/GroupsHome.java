@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,10 +29,7 @@ import java.util.List;
 
 public class GroupsHome extends Fragment {
     private FloatingActionButton createGroup;
-    private FirebaseFirestore mFirestore;
-    private Query mQuery;
     private int LIMIT = 100;
-    FirebaseFirestore db;
 
     private ChatGroupWorkRepo chatGroupWorkRepo;
     //These are essential to fill out the list of groups in the database
@@ -51,6 +49,7 @@ public class GroupsHome extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         createGroup = getView().findViewById(R.id.newgroup);
+
         //gets the recycler view and sets a manager to fill it
         grouplist = getView().findViewById(R.id.grouplist);
         grouplist.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -59,7 +58,6 @@ public class GroupsHome extends Fragment {
     }
 
     //calls the database and asks for all the current groups
-    //TODO add personalization so the user can only access their chats
     private void getChatRooms() {
         chatGroupWorkRepo.getRooms(new EventListener<QuerySnapshot>() {
 
