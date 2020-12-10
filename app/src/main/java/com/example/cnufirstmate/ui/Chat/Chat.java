@@ -1,6 +1,7 @@
 package com.example.cnufirstmate.ui.Chat;
 
-public class Chat { private String id;
+public class Chat {
+    private String id;
     private String chatRoomId;
     private String senderId;
     private String message;

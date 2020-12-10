@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cnufirstmate.ChatGroupRepo;
+import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,13 +23,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CreateGroup extends AppCompatActivity {
     private EditText groupName;
     private ArrayList<String> members;
-    private ChatGroupRepo chatGroupRepo;
+    private ChatGroupWorkRepo chatGroupWorkRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class CreateGroup extends AppCompatActivity {
         groupName = findViewById(R.id.room_name);
         setContentView(R.layout.activity_create_group);
 
-        chatGroupRepo = new ChatGroupRepo(FirebaseFirestore.getInstance());
+        chatGroupWorkRepo = new ChatGroupWorkRepo(FirebaseFirestore.getInstance());
 
         setTitle(getString(R.string.create_room));
 
@@ -74,7 +72,7 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     private void createGroup() {
-        chatGroupRepo.createGroup(
+        chatGroupWorkRepo.createGroup(
                 groupName.getText().toString(), members,
                 new OnSuccessListener<DocumentReference>() {
                     @Override

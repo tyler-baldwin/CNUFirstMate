@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,20 +15,19 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cnufirstmate.R;
 
-public class SlideshowFragment extends Fragment {
+public class WebFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private Web_ViewModel webViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
+        webViewModel =
+                ViewModelProviders.of(this).get(Web_ViewModel.class);
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        webViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
             }
         });
         WebView wv = root.findViewById(R.id.fragment_webview);

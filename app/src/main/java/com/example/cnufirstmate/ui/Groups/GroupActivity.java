@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.cnufirstmate.ChatGroupRepo;
+import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
 import com.example.cnufirstmate.ui.Chat.Chat;
 import com.example.cnufirstmate.ui.Chat.ChatsAdapter;
@@ -42,7 +42,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private String userId = "";
 
-    private ChatGroupRepo chatGroupRepo;
+    private ChatGroupWorkRepo chatGroupWorkRepo;
 
     private EditText message;
     private ImageButton send;
@@ -50,7 +50,7 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chatGroupRepo = new ChatGroupRepo(FirebaseFirestore.getInstance());
+        chatGroupWorkRepo = new ChatGroupWorkRepo(FirebaseFirestore.getInstance());
 
         userId = getCurrentUserKey();
 
@@ -104,7 +104,7 @@ public class GroupActivity extends AppCompatActivity {
         String chatMessage = message.getText().toString();
         message.setText("");
         send.setEnabled(false);
-        chatGroupRepo.addMessageToChatRoom(
+        chatGroupWorkRepo.addMessageToChatRoom(
                 groupID,
                 userId,
                 chatMessage,
@@ -129,7 +129,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void showChatMessages() {
-        chatGroupRepo.getChats(groupID, new EventListener<QuerySnapshot>() {
+        chatGroupWorkRepo.getChats(groupID, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
                 if (e != null) {

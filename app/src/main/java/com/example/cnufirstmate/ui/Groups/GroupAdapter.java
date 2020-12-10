@@ -1,4 +1,4 @@
-package com.example.cnufirstmate.ui.Chat;
+package com.example.cnufirstmate.ui.Groups;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +11,12 @@ import com.example.cnufirstmate.R;
 
 import java.util.List;
 
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ChatRoomViewHolder> {
 
-    private List<ChatRoom> chatRooms;
+    private List<Group> groups;
     private OnChatRoomClickListener listener;
-    public ChatRoomAdapter(List<ChatRoom> chatRooms, OnChatRoomClickListener listener) {
-        this.chatRooms = chatRooms;
+    public GroupAdapter(List<Group> groups, OnChatRoomClickListener listener) {
+        this.groups = groups;
         this.listener = listener;
     }
 
@@ -32,21 +32,21 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
 
     @Override
     public void onBindViewHolder(ChatRoomViewHolder holder, int position) {
-        holder.bind(chatRooms.get(position));
+        holder.bind(groups.get(position));
     }
 
     public interface OnChatRoomClickListener {
-        void onClick(ChatRoom chatRoom);
+        void onClick(Group group);
     }
 
     @Override
     public int getItemCount() {
-        return chatRooms.size();
+        return groups.size();
     }
 
     class ChatRoomViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        ChatRoom chatRoom;
+        Group group;
 
         public ChatRoomViewHolder(View itemView) {
             super(itemView);
@@ -54,14 +54,14 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.ChatRo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(chatRoom);
+                    listener.onClick(group);
                 }
             });
         }
 
-        public void bind(ChatRoom chatRoom) {
-            this.chatRoom = chatRoom;
-            name.setText(chatRoom.getName());
+        public void bind(Group group) {
+            this.group = group;
+            name.setText(group.getName());
         }
     }
 }

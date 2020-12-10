@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cnufirstmate.ChatGroupRepo;
+import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
-import com.example.cnufirstmate.ui.Chat.ChatRoom;
-import com.example.cnufirstmate.ui.Chat.ChatRoomAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,17 +33,17 @@ public class GroupsHome extends Fragment {
     private int LIMIT = 100;
     FirebaseFirestore db;
 
-    private ChatGroupRepo chatGroupRepo;
+    private ChatGroupWorkRepo chatGroupWorkRepo;
     //These are essential to fill out the list of groups in the database
     private RecyclerView grouplist;
-    private ChatRoomAdapter adapter;
+    private GroupAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //inflates appropriate view
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
         //allows retrieval of info with helper class
-        chatGroupRepo = new ChatGroupRepo(FirebaseFirestore.getInstance());
+        chatGroupWorkRepo = new ChatGroupWorkRepo(FirebaseFirestore.getInstance());
         return view;
     }
 
@@ -64,7 +61,7 @@ public class GroupsHome extends Fragment {
     //calls the database and asks for all the current groups
     //TODO add personalization so the user can only access their chats
     private void getChatRooms() {
-        chatGroupRepo.getRooms(new EventListener<QuerySnapshot>() {
+        chatGroupWorkRepo.getRooms(new EventListener<QuerySnapshot>() {
 
             @Override
             public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
@@ -73,25 +70,25 @@ public class GroupsHome extends Fragment {
                     return;
                 }
 
-                List<ChatRoom> rooms = new ArrayList<>();
+                List<Group> rooms = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
 //                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
-                    rooms.add(new ChatRoom(doc.getId(), doc.getString("name")));
+                    rooms.add(new Group(doc.getId(), doc.getString("name")));
                 }
 
-                adapter = new ChatRoomAdapter(rooms,listener);
+                adapter = new GroupAdapter(rooms,listener);
                 grouplist.setAdapter(adapter);
             }
         });
     }
 
     /*This is a method to launch into the actual chat once clicked*/
-    ChatRoomAdapter.OnChatRoomClickListener listener = new ChatRoomAdapter.OnChatRoomClickListener() {
+    GroupAdapter.OnChatRoomClickListener listener = new GroupAdapter.OnChatRoomClickListener() {
         @Override
-        public void onClick(ChatRoom chatRoom) {
+        public void onClick(Group group) {
             Intent intent = new Intent(getContext(), GroupActivity.class);
-            intent.putExtra(GroupActivity.GROUP_ID, chatRoom.getId());
-            intent.putExtra(GroupActivity.GROUP_NAME, chatRoom.getName());
+            intent.putExtra(GroupActivity.GROUP_ID, group.getId());
+            intent.putExtra(GroupActivity.GROUP_NAME, group.getName());
             startActivity(intent);
         }
     };

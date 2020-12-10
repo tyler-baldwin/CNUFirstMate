@@ -12,6 +12,8 @@ import com.example.cnufirstmate.R;
 
 import java.util.List;
 
+/*Chats adpater is responsible for both setting the chat view
+and filling out the message with text and author*/
 public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatViewHolder> {
     private static final int SENT = 0;
     private static final int RECEIVED = 1;

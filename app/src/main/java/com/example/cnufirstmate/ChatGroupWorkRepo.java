@@ -18,21 +18,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 /*
-* This Class contains most of the network calls relating the the group and chat functionality*/
-public class ChatGroupRepo {
+ * This Class contains most of the network calls relating the the group,work and chat functionality*/
+public class ChatGroupWorkRepo {
     //For logging purposes
     private static final String TAG = "ChatGroupRepo";
     //Reference to DB
     private FirebaseFirestore db;
-    public ChatGroupRepo(FirebaseFirestore db) {
+
+    public ChatGroupWorkRepo(FirebaseFirestore db) {
         this.db = db;
     }
 //Creates a group with That group name, a list of people including yourself and some listeners
 
     public void createGroup(String name, ArrayList<String> arr,
-                           final OnSuccessListener<DocumentReference> successCallback,
-                           final OnFailureListener failureCallback) {
+                            final OnSuccessListener<DocumentReference> successCallback,
+                            final OnFailureListener failureCallback) {
         Map<String, Object> Group = new HashMap<>();
         Group.put("name", name);
         Group.put("Members", arr);
@@ -57,7 +59,6 @@ public class ChatGroupRepo {
                 .whereArrayContains("Members", MainActivity.email)
                 .orderBy("name")
                 .addSnapshotListener(listener);
-//        Log.println(Log.ERROR,MainActivity.email,MainActivity.email);
     }
 
     public void addMessageToChatRoom(String groupId,
@@ -92,5 +93,11 @@ public class ChatGroupRepo {
                 .whereEqualTo("group_id", roomId)
                 .orderBy("sent", Query.Direction.DESCENDING)
                 .addSnapshotListener(listener);
+    }
+
+    public void getWorkOrders(EventListener<QuerySnapshot> listener) {
+        db.collection("orders")
+                .orderBy("date")
+                .addSnapshotListener(listener);;
     }
 }

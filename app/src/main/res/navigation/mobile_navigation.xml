@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.cnufirstmate.ui.cnu.SlideshowFragment"
+        android:name="com.example.cnufirstmate.ui.cnu.WebFragment"
         android:label="@string/menu_cnu_pages"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

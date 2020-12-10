@@ -1,29 +1,19 @@
 package com.example.cnufirstmate.ui.Chat;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cnufirstmate.ChatGroupRepo;
+import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
-import com.google.firebase.firestore.EventListener;
+import com.example.cnufirstmate.ui.Groups.GroupAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChatFragment extends Fragment {
 
@@ -33,14 +23,14 @@ public class ChatFragment extends Fragment {
     private Query mQuery;
     private int LIMIT = 100;
     FirebaseFirestore db;
-    private ChatGroupRepo chatGroupRepo;
-    private ChatRoomAdapter adapter;
+    private ChatGroupWorkRepo chatGroupWorkRepo;
+    private GroupAdapter adapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        chatGroupRepo = new ChatGroupRepo(FirebaseFirestore.getInstance());
+        chatGroupWorkRepo = new ChatGroupWorkRepo(FirebaseFirestore.getInstance());
         initFirestore();
         mFirestore = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_chat, container, false);

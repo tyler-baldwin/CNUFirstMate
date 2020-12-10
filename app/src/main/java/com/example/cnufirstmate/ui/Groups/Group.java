@@ -1,10 +1,10 @@
-package com.example.cnufirstmate.ui.Chat;
+package com.example.cnufirstmate.ui.Groups;
 
-public class ChatRoom {
+public class Group {
     private String id;
     private String name;
 
-    public ChatRoom(String id, String name) {
+    public Group(String id, String name) {
         this.id = id;
         this.name = name;
     }
