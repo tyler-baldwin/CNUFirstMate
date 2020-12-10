@@ -1,16 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--This layout is the actual clickable group-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <!--    group item is a drawable resource -->
     <TextView
         android:id="@+id/item_chat_room_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/group_item"
         android:fontFamily="@font/roboto_medium"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:padding="10dp"
+        android:layout_margin="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 </LinearLayout>
