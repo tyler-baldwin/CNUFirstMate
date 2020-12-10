@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,9 +52,8 @@ public class WorkOrderFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Submitted Work Order", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 submitOrder();
+
             }
         });
 
@@ -61,13 +62,24 @@ public class WorkOrderFragment extends Fragment {
 
     //this method submits the order to the nosql database for review by admins
     public void submitOrder() {
+        if(isWorkEmpty()){
+            Toast.makeText(this.getContext(), "please fill out every field", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Map<String, Object> orderMap = new HashMap<>();
         Spinner buildingSpinner = (Spinner) getView().findViewById(R.id.reshall_spinner);
         String buildingText = (String) buildingSpinner.getSelectedItem();
+
         TextInputLayout room = getView().findViewById(R.id.room);
         String roomText = room.getEditText().getText().toString();
+        EditText editText = getView().findViewById(R.id.roomtext);
+        editText.setText("", TextView.BufferType.EDITABLE);
+
         TextInputLayout issue = getView().findViewById(R.id.issue);
         String issueText = issue.getEditText().getText().toString();
+        editText = getView().findViewById(R.id.issuetext);
+        editText.setText("", TextView.BufferType.EDITABLE);
+
         Date currentTime = Calendar.getInstance().getTime();
         GoogleSignInAccount acc = GoogleSignIn.getLastSignedInAccount(this.getContext());
         String personName = acc.getDisplayName();
@@ -92,6 +104,7 @@ public class WorkOrderFragment extends Fragment {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Toast.makeText( getActivity(), "Submitted Work Order", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -101,6 +114,16 @@ public class WorkOrderFragment extends Fragment {
                     }
                 });
     }
+
+    public boolean isWorkEmpty(){
+        TextInputLayout room = getView().findViewById(R.id.room);
+        String roomText = room.getEditText().getText().toString();
+        TextInputLayout issue = getView().findViewById(R.id.issue);
+        String issueText = issue.getEditText().getText().toString();
+
+        return roomText.isEmpty() && issueText.isEmpty();
+    }
+
     private void setupSpinner(){
         List<String> spinnerArray =  new ArrayList<String>();
         spinnerArray.add("Santoro");
