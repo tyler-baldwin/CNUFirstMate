@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
-import com.example.cnufirstmate.ui.Groups.GroupActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.EventListener;
