@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Members">
+
+        <EditTextPreference
+            app:key="addMem"
+            app:title="Add Members"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="RemoveMem"
+            app:title="Remove Members"
+            app:useSimpleSummaryProvider="true" />
+
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

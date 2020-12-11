@@ -2,11 +2,17 @@ package com.example.cnufirstmate.ui.Groups;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +22,7 @@ import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
 import com.example.cnufirstmate.ui.Chat.Chat;
 import com.example.cnufirstmate.ui.Chat.ChatsAdapter;
+import com.example.cnufirstmate.ui.SettingsActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,13 +74,30 @@ public class GroupActivity extends AppCompatActivity {
         initUI();
         showChatMessages();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.group_menu, menu);
+        return true;
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.settingsmenu:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
+    /*for now email is used as the uID but may change in future*/
     private String getCurrentUserKey() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         userId = (account.getEmail());
         return userId;
     }
-
+    /*This initializes a lot of the UI for the USer*/
     private void initUI() {
         message = findViewById(R.id.message_text);
         send = findViewById(R.id.send_message);
@@ -92,6 +116,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
+        //hands off the chatrecycler to fill
         chatRecycler = findViewById(R.id.groupRecycler);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);

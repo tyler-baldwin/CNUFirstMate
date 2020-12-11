@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workOrder.WorkOrderFragment">
+    tools:context=".ui.workOrder.WorkOrderFragment"
+    android:orientation="vertical"
+    android:background="#2F000000"
+    android:gravity="center_horizontal"
+    >
 
 
     <TextView
@@ -14,34 +19,21 @@
         android:fontFamily="@font/roboto_medium"
         android:text="@string/worktitle"
         android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+         />
 
     <Spinner
         android:id="@+id/reshall_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/workTitle"
-        app:layout_constraintVertical_bias="0.055" />
+         />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/issue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_margin="30dp"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/roomtext"
@@ -54,10 +46,8 @@
         android:id="@+id/issue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/room">
+        android:layout_margin="30dp"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/issuetext"
@@ -70,13 +60,8 @@
         android:id="@+id/wosubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="368dp"
         android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/issue"
-        app:layout_constraintVertical_bias="0.387" />
+        android:layout_margin="30dp"
+         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
