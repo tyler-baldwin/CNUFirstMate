@@ -7,13 +7,20 @@ public class WorkOrder {
     private String issue;
     private String name;
     private String room;
-    public WorkOrder(String building, String date, String email, String issue, String name, String room) {
+
+    public String getId() {
+        return id;
+    }
+
+    private String id;
+    public WorkOrder(String building, String date, String email, String issue, String name, String room,String id) {
         this.building = building;
         this.date = date;
         this.email = email;
         this.issue = issue;
         this.name = name;
         this.room = room;
+        this.id = id;
     }
 
     public String getBuilding() {

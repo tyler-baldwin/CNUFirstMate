@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cnufirstmate.R;
 import com.example.cnufirstmate.ui.Groups.Group;
 import com.example.cnufirstmate.ui.Groups.GroupAdapter;
+import com.google.firebase.Timestamp;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.WorkViewHolder> {
@@ -55,7 +58,20 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
 
         public WorkViewHolder(@NonNull View itemView) {
             super(itemView);
+//            Timestamp.now()
+//            if () {
+//    ...
+//            }
+//            workOrder.getDate();
+//            Long l = Long.getLong(workOrder != null ? workOrder.getDate() : null);
+//            //compares in week milliseconds
+//            if(System.currentTimeMillis() - l > (7 * 24 * 60 * 60 * 1000)){
+//                name = itemView.findViewById(R.id.work_order_textView_long);
+//            }
+//            else{
             name = itemView.findViewById(R.id.work_order_textView);
+//            }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,7 +82,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
 
         public void bind(WorkOrder workOrder) {
             this.workOrder = workOrder;
-            name.setText(workOrder.getIssue());
+            name.setText(workOrder.getBuilding() + " " + workOrder.getRoom());
         }
     }
 }

@@ -80,7 +80,7 @@ public class WorkOrderFragment extends Fragment {
         editText = getView().findViewById(R.id.issuetext);
         editText.setText("", TextView.BufferType.EDITABLE);
 
-        Date currentTime = Calendar.getInstance().getTime();
+//        Date currentTime = Calendar.getInstance().getTime();
         GoogleSignInAccount acc = GoogleSignIn.getLastSignedInAccount(this.getContext());
         String personName = acc.getDisplayName();
         String personEmail = acc.getEmail();
@@ -88,7 +88,8 @@ public class WorkOrderFragment extends Fragment {
         String email = personEmail;
         orderMap.put("name", name);
         orderMap.put("email", email);
-        orderMap.put("date", currentTime);
+        String date = String.valueOf(System.currentTimeMillis());
+        orderMap.put("date", date);
         orderMap.put("building", buildingText);
         orderMap.put("room", roomText);
         orderMap.put("issue", issueText);
@@ -121,7 +122,7 @@ public class WorkOrderFragment extends Fragment {
         TextInputLayout issue = getView().findViewById(R.id.issue);
         String issueText = issue.getEditText().getText().toString();
 
-        return roomText.isEmpty() && issueText.isEmpty();
+        return roomText.isEmpty() || issueText.isEmpty();
     }
 
     private void setupSpinner(){

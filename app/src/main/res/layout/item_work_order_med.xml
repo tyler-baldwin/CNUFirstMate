@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><!--This layout is the actual clickable group-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--    group item is a drawable resource -->
+    <TextView
+        android:id="@+id/work_order_textView_med"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/med_work"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="10dp"
+        android:layout_margin="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+</LinearLayout>

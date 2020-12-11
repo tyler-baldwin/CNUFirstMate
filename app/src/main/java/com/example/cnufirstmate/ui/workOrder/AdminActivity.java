@@ -1,16 +1,23 @@
 package com.example.cnufirstmate.ui.workOrder;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
 import com.example.cnufirstmate.ui.Groups.GroupActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -18,6 +25,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
@@ -25,7 +34,7 @@ public class AdminActivity extends AppCompatActivity {
     private RecyclerView workRecycler;
     private WorkOrderAdapter adapter;
     private ChatGroupWorkRepo chatGroupWorkRepo;
-
+    private List<WorkOrder> workOrders;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +60,13 @@ public class AdminActivity extends AppCompatActivity {
                     return;
                 }
 
-                List<WorkOrder> workOrders = new ArrayList<>();
+                workOrders = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
-//                    Toast.makeText(getContext(), doc.getString("name"), Toast.LENGTH_LONG).show();
-                    String date = doc.getTimestamp("date").toString();
-                    workOrders.add(new WorkOrder(doc.getString("building"), date,
+//                    Toast.makeText(AdminActivity.this, doc.getTimestamp("date").toString(), Toast.LENGTH_LONG).show();
+
+                    workOrders.add(new WorkOrder(doc.getString("building"), doc.getString("date"),
                             doc.getString("email"), doc.getString("issue"),
-                            doc.getString("name"), doc.getString("room")));
+                            doc.getString("name"), doc.getString("room"),doc.getId()));
                 }
 
                 adapter = new WorkOrderAdapter(workOrders, listener);
@@ -69,13 +78,55 @@ public class AdminActivity extends AppCompatActivity {
     /*This is a method to launch into the actual chat once clicked*/
     WorkOrderAdapter.OnWorkOrderClickListener listener = new WorkOrderAdapter.OnWorkOrderClickListener() {
         @Override
-        public void onClick(WorkOrder workOrder) {
+        public void onClick(final WorkOrder workOrder) {
             //TODO decide what to do on onCLick
-            Intent intent = new Intent(AdminActivity.this, GroupActivity.class);
+            new AlertDialog.Builder(AdminActivity.this)
+                    .setTitle("Work Order "  + workOrder.getEmail())
+                    .setMessage(workOrder.getIssue() + "\n" + workOrder.getBuilding() + " " + workOrder.getRoom())
+
+                    .setPositiveButton("Delete & Notify", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                                String[] emails = {workOrder.getEmail()};
+                                intent.putExtra(Intent.EXTRA_EMAIL,emails);
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Work Order " + workOrder.getId() + " Complete");
+                                String nowTime = Calendar.getInstance().getTime().toString();
+                                intent.putExtra(Intent.EXTRA_TEXT, "Work has been completed on " + nowTime + " \n Work Done");
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(intent);
+                                }
+
+                            FirebaseFirestore db;
+                            db = FirebaseFirestore.getInstance();
+                            db.collection("orders").document(workOrder.getId())
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("delete", "DocumentSnapshot successfully deleted!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("delete", "Error deleting document", e);
+                                        }
+                                    });
+
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+//            Intent intent = new Intent(AdminActivity.this, GroupActivity.class);
             //TODO make the work order show??
 //            intent.putExtra(GroupActivity.GROUP_ID, group.getId());
 //            intent.putExtra(GroupActivity.GROUP_NAME, group.getName());
-            startActivity(intent);
+//            startActivity(intent);
         }
 
 
