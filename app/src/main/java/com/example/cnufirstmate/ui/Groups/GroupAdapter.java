@@ -39,6 +39,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ChatRoomView
         void onClick(Group group);
     }
 
+
     @Override
     public int getItemCount() {
         return groups.size();

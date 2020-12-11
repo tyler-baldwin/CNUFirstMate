@@ -91,6 +91,8 @@ public class GroupsHome extends Fragment {
         }
     };
 
+
+
     //listens for the creategroup activity launch
     private void initUI() {
         createGroup.setOnClickListener(new View.OnClickListener() {

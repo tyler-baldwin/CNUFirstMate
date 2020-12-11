@@ -165,7 +165,20 @@ public class MainActivity extends AppCompatActivity {
         orderMap.put("uid", uid);
         orderMap.put("name", name);
         orderMap.put("email", email);
-
+        db.collection("users")
+                .add(orderMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error adding document", e);
+                    }
+                });
     }
 
     //this method submits the order to the nosql database for review by admins

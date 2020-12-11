@@ -9,7 +9,7 @@
         android:id="@+id/work_order_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/group_item"
+        android:background="@drawable/med_work"
         android:fontFamily="@font/roboto_medium"
         android:padding="10dp"
         android:layout_margin="4dp"
