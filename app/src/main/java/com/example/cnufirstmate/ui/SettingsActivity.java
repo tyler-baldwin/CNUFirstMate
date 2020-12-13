@@ -18,12 +18,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
-                    .commit();
-        }
         Bundle extras = getIntent().getExtras();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -41,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.create_room:
-                findViewById(R.id.addMem).getText().toString();
+                findViewById(R.id.addMem).getS;
                 finish();
                 break;
         }
