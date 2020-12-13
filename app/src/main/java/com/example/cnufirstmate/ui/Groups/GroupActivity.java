@@ -86,6 +86,8 @@ public class GroupActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settingsmenu:
                 Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("groupId",groupID);
                 startActivity(intent);
                 break;
         }

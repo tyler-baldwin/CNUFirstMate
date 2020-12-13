@@ -1,20 +1,17 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:andriod="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="Members">
-
-        <EditTextPreference
+        <EditText
+            andriod:id="@+id/addMem"
             app:key="addMem"
             app:title="Add Members"
             app:useSimpleSummaryProvider="true" />
 
-        <EditTextPreference
+        <EditText
+            andriod:id="@+id/removeMem"
             app:key="RemoveMem"
             app:title="Remove Members"
             app:useSimpleSummaryProvider="true" />
-
-
     </PreferenceCategory>
-
-
-
-</PreferenceScreen>
+</LinearLayout>
