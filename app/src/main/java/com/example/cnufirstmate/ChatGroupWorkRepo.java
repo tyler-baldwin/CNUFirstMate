@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -103,6 +104,14 @@ public class ChatGroupWorkRepo {
                 .addSnapshotListener(listener);;
     }
 
+    public void addMemberToGroup(String added,String group){
+        DocumentReference addref = db.collection("Groups").document(group);
+        addref.update("Members", FieldValue.arrayUnion(added));
+    }
 
+    public void removeMemberToGroup(String remmed,String group){
+        DocumentReference remref = db.collection("Groups").document(group);
+        remref.update("Members", FieldValue.arrayRemove(remmed));
+    }
 
 }

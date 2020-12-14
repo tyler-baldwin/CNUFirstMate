@@ -1,7 +1,8 @@
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
             android:id="@+id/memadd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Add Members, seperate by commas" />
+            android:hint="Add one member, then submit with checkmark" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -25,7 +26,14 @@
             android:id="@+id/removeMem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Remove Members, seperate by commas" />
+            android:hint="Remove one member, then submit with checkmark" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Members  \n"
+        />
 
 </LinearLayout>
