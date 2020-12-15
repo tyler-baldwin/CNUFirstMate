@@ -44,6 +44,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private String groupID;
     private String groupName;
+    private String nick;
     private RecyclerView chatRecycler;
     private ChatsAdapter adapter;
 
@@ -71,6 +72,8 @@ public class GroupActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             setTitle(groupName);
         }
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        nick = account.getDisplayName();
         initUI();
         showChatMessages();
     }
@@ -134,7 +137,7 @@ public class GroupActivity extends AppCompatActivity {
         chatGroupWorkRepo.addMessageToChatRoom(
                 groupID,
                 userId,
-                chatMessage,
+                chatMessage,nick,
                 new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -172,7 +175,8 @@ public class GroupActivity extends AppCompatActivity {
                                     doc.getString("chat_room_id"),
                                     doc.getString("sender_id"),
                                     doc.getString("message"),
-                                    doc.getLong("sent")
+                                    doc.getLong("sent"),
+                                    doc.getString("nick")
                             )
                     );
                 }

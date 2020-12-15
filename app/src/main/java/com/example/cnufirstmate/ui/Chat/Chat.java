@@ -7,15 +7,22 @@ public class Chat {
     private String message;
     private long sent;
 
-    public Chat(String id, String chatRoomId, String senderId, String message, long sent) {
+
+
+    private String nick;
+
+    public Chat(String id, String chatRoomId, String senderId, String message, long sent,String nick) {
         this.id = id;
         this.chatRoomId = chatRoomId;
         this.senderId = senderId;
         this.message = message;
         this.sent = sent;
+        this.nick = nick;
     }
 
-
+    public String getNick() {
+        return nick;
+    }
     public String getId() {
         return id;
     }

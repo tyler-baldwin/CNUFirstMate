@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,7 +36,7 @@ public class ChatGroupWorkRepo {
     private static final String TAG = "ChatGroupRepo";
     //Reference to DB
     private FirebaseFirestore db;
-    private String newmems;
+
     public ChatGroupWorkRepo(FirebaseFirestore db) {
         this.db = db;
     }
@@ -72,6 +74,7 @@ public class ChatGroupWorkRepo {
     public void addMessageToChatRoom(String groupId,
                                      String senderId,
                                      String message,
+                                     String nick,
                                      final OnSuccessListener<DocumentReference> successCallback,
                                      final OnFailureListener failureCallback) {
         Map<String, Object> msg = new HashMap<>();
@@ -79,7 +82,7 @@ public class ChatGroupWorkRepo {
         msg.put("sender_id", senderId);
         msg.put("message", message);
         msg.put("sent", System.currentTimeMillis());
-
+        msg.put("nick", nick);
         db.collection("message")
                 .add(msg)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -103,18 +106,25 @@ public class ChatGroupWorkRepo {
                 .addSnapshotListener(listener);
     }
 
-    public void getWorkOrders(EventListener<QuerySnapshot> listener) {
-        db.collection("orders")
-                .orderBy("date")
-                .addSnapshotListener(listener);;
+    public void getWorkOrders(String email, EventListener<QuerySnapshot> listener) {
+        if (email.equals("tyler.baldwin.17@cnu.edu")) {
+            db.collection("orders")
+                    .orderBy("date")
+                    .addSnapshotListener(listener);
+        } else {
+            db.collection("orders")
+                    .whereEqualTo("email", email)
+                    .orderBy("date")
+                    .addSnapshotListener(listener);
+        }
     }
 
-    public void addMemberToGroup(String added,String group){
+    public void addMemberToGroup(String added, String group) {
         DocumentReference addref = db.collection("Groups").document(group);
         addref.update("Members", FieldValue.arrayUnion(added));
     }
 
-    public void removeMemberToGroup(String remmed,String group){
+    public void removeMemberToGroup(String remmed, String group) {
         DocumentReference remref = db.collection("Groups").document(group);
         remref.update("Members", FieldValue.arrayRemove(remmed));
     }

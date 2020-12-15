@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.example.cnufirstmate.ChatGroupWorkRepo;
 import com.example.cnufirstmate.R;
+import com.example.cnufirstmate.ui.Groups.GroupActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.EventListener;
@@ -51,7 +54,9 @@ public class AdminActivity extends AppCompatActivity {
 
     //calls the database and asks for all the current workorders
     private void getWorkOrders() {
-        chatGroupWorkRepo.getWorkOrders(new EventListener<QuerySnapshot>() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        String userId = (account.getEmail());
+        chatGroupWorkRepo.getWorkOrders(userId, new EventListener<QuerySnapshot>() {
 
             @Override
             public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
@@ -121,7 +126,6 @@ public class AdminActivity extends AppCompatActivity {
 
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
 

@@ -78,7 +78,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatViewHold
 
         public void bind(Chat chat) {
             message.setText(chat.getMessage());
-            chat_sender.setText(chat.getSenderId());
+            chat_sender.setText(chat.getNick());
         }
     }
 }
