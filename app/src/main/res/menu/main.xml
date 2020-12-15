@@ -9,7 +9,7 @@
     <item
         android:id="@+id/admin"
         android:orderInCategory="100"
-        android:title="Admin"
+        android:title="Submitted Work Orders"
         app:showAsAction="never" />
 
 </menu>

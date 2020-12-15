@@ -107,6 +107,7 @@ public class ChatGroupWorkRepo {
     }
 
     public void getWorkOrders(String email, EventListener<QuerySnapshot> listener) {
+        //TODO remove, this is for demo purposes only
         if (email.equals("tyler.baldwin.17@cnu.edu")) {
             db.collection("orders")
                     .orderBy("date")

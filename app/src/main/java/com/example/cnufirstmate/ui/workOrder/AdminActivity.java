@@ -37,14 +37,18 @@ public class AdminActivity extends AppCompatActivity {
     private WorkOrderAdapter adapter;
     private ChatGroupWorkRepo chatGroupWorkRepo;
     private List<WorkOrder> workOrders;
+    GoogleSignInAccount account;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        account = GoogleSignIn.getLastSignedInAccount(this);
+        userId = (account.getEmail());
         setContentView(R.layout.activity_admin);
         chatGroupWorkRepo = new ChatGroupWorkRepo(FirebaseFirestore.getInstance());
         if (getSupportActionBar() != null) {
-            setTitle("Work Order Admin");
+            setTitle("Work Orders Submitted");
         }
         workRecycler = findViewById(R.id.adminRecycler);
         workRecycler.setLayoutManager(new LinearLayoutManager(AdminActivity.this));
@@ -54,8 +58,6 @@ public class AdminActivity extends AppCompatActivity {
 
     //calls the database and asks for all the current workorders
     private void getWorkOrders() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        String userId = (account.getEmail());
         chatGroupWorkRepo.getWorkOrders(userId, new EventListener<QuerySnapshot>() {
 
             @Override
@@ -84,49 +86,84 @@ public class AdminActivity extends AppCompatActivity {
     WorkOrderAdapter.OnWorkOrderClickListener listener = new WorkOrderAdapter.OnWorkOrderClickListener() {
         @Override
         public void onClick(final WorkOrder workOrder) {
-            new AlertDialog.Builder(AdminActivity.this)
-                    .setTitle("Work Order " + workOrder.getId())
-                    .setMessage(workOrder.getBuilding() + " " + workOrder.getRoom()+ "\n" +workOrder.getIssue()
-                            + "\n" +workOrder.getName() + " " + workOrder.getEmail())
-                    /*This should be used by workers or admin to complete work orders*/
-                    .setPositiveButton("Delete & Notify", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            /*Start email intent*/
-                            Intent intent = new Intent(Intent.ACTION_SENDTO);
-                            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                            String[] emails = {workOrder.getEmail()};
-                            intent.putExtra(Intent.EXTRA_EMAIL, emails);
-                            intent.putExtra(Intent.EXTRA_SUBJECT, "Work Order " + workOrder.getId() + " Complete");
-                            String nowTime = Calendar.getInstance().getTime().toString();
-                            intent.putExtra(Intent.EXTRA_TEXT, workOrder.getName() + ", "
-                                    + workOrder.getIssue() + " has been completed on " + nowTime + " \n Work Done: ");
-                            if (intent.resolveActivity(getPackageManager()) != null) {
-                                startActivity(intent);
+            //TODO remove, this is for demo purposes only
+            if (userId.equals("tyler.baldwin.17@cnu.edu")) {
+                new AlertDialog.Builder(AdminActivity.this)
+                        .setTitle("Work Order " + workOrder.getId())
+                        .setMessage(workOrder.getBuilding() + " " + workOrder.getRoom() + "\n" + workOrder.getIssue()
+                                + "\n" + workOrder.getName() + " " + workOrder.getEmail())
+                        /*This should be used by workers or admin to complete work orders*/
+                        .setPositiveButton("Delete & Notify", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                /*Start email intent*/
+                                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                                String[] emails = {workOrder.getEmail()};
+                                intent.putExtra(Intent.EXTRA_EMAIL, emails);
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Work Order " + workOrder.getId() + " Complete");
+                                String nowTime = Calendar.getInstance().getTime().toString();
+                                intent.putExtra(Intent.EXTRA_TEXT, workOrder.getName() + ", "
+                                        + workOrder.getIssue() + " has been completed on " + nowTime + " \n Work Done: ");
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(intent);
+                                }
+                                /*Start Database delete*/
+                                FirebaseFirestore db;
+                                db = FirebaseFirestore.getInstance();
+                                db.collection("orders").document(workOrder.getId())
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("delete", "DocumentSnapshot successfully deleted!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("delete", "Error deleting document", e);
+                                            }
+                                        });
+
                             }
-                            /*Start Database delete*/
-                            FirebaseFirestore db;
-                            db = FirebaseFirestore.getInstance();
-                            db.collection("orders").document(workOrder.getId())
-                                    .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("delete", "DocumentSnapshot successfully deleted!");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("delete", "Error deleting document", e);
-                                        }
-                                    });
+                        })
 
-                        }
-                    })
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            } else{
+                new AlertDialog.Builder(AdminActivity.this)
+                        .setTitle("Work Order " + workOrder.getId())
+                        .setMessage(workOrder.getBuilding() + " " + workOrder.getRoom() + "\n" + workOrder.getIssue()
+                                + "\n" + workOrder.getName() + " " + workOrder.getEmail())
+                        /*This should be used by workers or admin to complete work orders*/
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                /*Start Database delete*/
+                                FirebaseFirestore db;
+                                db = FirebaseFirestore.getInstance();
+                                db.collection("orders").document(workOrder.getId())
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("delete", "DocumentSnapshot successfully deleted!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("delete", "Error deleting document", e);
+                                            }
+                                        });
 
-                    // A null listener allows the button to dismiss the dialog and take no further action.
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
         }
 
 
